@@ -1,0 +1,63 @@
+# Entwicklung: APP_SITE=http://localhost, PORTAL_SITE=http://portal.localhost, SIGN_SITE=http://sign.localhost
+# Produktion:  APP_SITE=app.<domain>.de, PORTAL_SITE=portal.<domain>.de, SIGN_SITE=sign.<domain>.de  → automatisches HTTPS (Let's Encrypt)
+
+(security_headers) {
+	header {
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Frame-Options "DENY"
+		Permissions-Policy "camera=(self), microphone=(), geolocation=(), payment=()"
+		Cross-Origin-Opener-Policy "same-origin"
+		# HSTS greift nur über HTTPS (Produktion); über http://localhost wird er ignoriert
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		# CSP: nur eigene Quellen; Next.js benötigt Inline-Skripte für die Hydration; Bilder auch als data:/blob: (Logo, Vorschau)
+		Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+		-Server
+	}
+}
+
+{$APP_SITE} {
+	import security_headers
+	encode zstd gzip
+
+	handle /api/* {
+		reverse_proxy backend:8000
+	}
+
+	handle {
+		reverse_proxy frontend:3000
+	}
+}
+
+# Kundenportal: nur Portal-, Kündigungs- und öffentliche Endpunkte – der interne Bereich ist hier nicht erreichbar
+{$PORTAL_SITE} {
+	import security_headers
+	encode zstd gzip
+
+	@root path /
+	redir @root /portal 302
+
+	@portal_api path /api/portal/* /api/public/*
+	handle @portal_api {
+		reverse_proxy backend:8000
+	}
+
+	@portal_pages path /portal /portal/* /kuendigen /kuendigen/* /_next/* /favicon.ico
+	handle @portal_pages {
+		reverse_proxy frontend:3000
+	}
+
+	handle {
+		redir * /portal 302
+	}
+}
+
+{$SIGN_SITE} {
+	encode zstd gzip
+	header {
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+	reverse_proxy documenso:3000
+}

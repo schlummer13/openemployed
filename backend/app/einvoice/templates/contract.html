@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Vertrag {{ c.number }}</title>
+<style>
+  @page { size: A4; margin: 20mm 22mm 25mm 25mm;
+    @bottom-right { content: "Vertrag {{ c.number }} · Seite " counter(page) " von " counter(pages); font-size: 7pt; color: #475569; } }
+  body { font-family: "DejaVu Sans", sans-serif; font-size: 9.5pt; color: #0f172a; line-height: 1.45; }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8mm; }
+  .logo img { max-height: 16mm; max-width: 60mm; }
+  h1 { font-size: 15pt; margin: 0 0 1mm; } h2 { font-size: 10.5pt; margin: 6mm 0 1.5mm; }
+  .parties { display: flex; gap: 10mm; margin: 4mm 0; } .parties div { flex: 1; }
+  .muted { color: #475569; }
+  table { width: 100%; border-collapse: collapse; margin-top: 2mm; }
+  th { text-align: left; font-size: 8pt; border-bottom: 0.8pt solid #0f172a; padding: 1.2mm 1mm; }
+  td { border-bottom: 0.3pt solid #cbd5e1; padding: 1.2mm 1mm; } .num { text-align: right; white-space: nowrap; }
+  p { margin: 1mm 0; }
+</style>
+</head>
+<body>
+<div class="head">
+  <div><h1>Softwaremietvertrag</h1><span class="muted">Vertrag Nr. {{ c.number }} – {{ c.title }}</span></div>
+  <div class="logo">{% if logo %}<img src="{{ logo }}" alt="">{% endif %}</div>
+</div>
+
+<div class="parties">
+  <div><strong>Anbieter</strong><br>{{ seller.legal_name }}<br>{{ seller.street }}<br>{{ seller.postal_code }} {{ seller.city }}<br>
+    {% if seller.register_court %}{{ seller.register_court }}, {{ seller.register_number }}<br>{% endif %}
+    vertreten durch die Geschäftsführer {{ seller.managing_directors | join(", ") }}</div>
+  <div><strong>Kunde</strong><br>{{ buyer.name }}<br>{{ buyer.street }}<br>{{ buyer.postal_code }} {{ buyer.city }}<br>Kunden-Nr. {{ buyer.number }}</div>
+</div>
+
+<h2>§ 1 Vertragsgegenstand</h2>
+<p>Der Anbieter überlässt dem Kunden die nachstehend bezeichnete Software zur Nutzung über das Internet (Software as a Service) bzw. erbringt die genannten Leistungen:</p>
+<table>
+  <thead><tr><th>Leistung</th><th class="num">Menge</th><th class="num">Preis {{ "brutto" if buyer.type == "b2c" else "netto" }}</th></tr></thead>
+  <tbody>{% for l in c.lines %}<tr><td>{{ l.description }}</td><td class="num">{{ l.quantity | qty }} {{ l.unit_code | unit }}</td><td class="num">{{ l.unit_price | euro }}</td></tr>{% endfor %}</tbody>
+</table>
+<p class="muted">{% if buyer.type == "b2c" %}Alle Preise enthalten die gesetzliche Umsatzsteuer.{% else %}Alle Preise zuzüglich der gesetzlichen Umsatzsteuer. Summe netto je Abrechnungszeitraum: {{ c.amount_net | euro }}.{% endif %}</p>
+
+<h2>§ 2 Vertragsbeginn und Laufzeit</h2>
+<p>Der Vertrag beginnt am {{ c.start_date.isoformat() | date }}.
+{% if c.min_term_months %}Die Mindestlaufzeit beträgt {{ c.min_term_months }} Monat(e) (bis {{ c.term_end.isoformat() | date }}).{% else %}Eine Mindestlaufzeit besteht nicht.{% endif %}
+{% if c.renewal == "monthly" %}Danach läuft der Vertrag auf unbestimmte Zeit und ist mit einer Frist von {{ c.notice_months }} Monat(en) kündbar.
+{% elif c.renewal == "term" %}Der Vertrag verlängert sich jeweils um die Mindestlaufzeit, wenn er nicht mit einer Frist von {{ c.notice_months }} Monat(en) zum Laufzeitende gekündigt wird.
+{% else %}Der Vertrag endet mit Ablauf der Laufzeit, ohne dass es einer Kündigung bedarf.{% endif %}</p>
+{% if buyer.type == "b2c" %}<p>Verbraucher können den Vertrag nach Ablauf der Mindestlaufzeit jederzeit mit einer Frist von höchstens einem Monat kündigen (§ 309 Nr. 9 BGB). Die Kündigung ist auch über die Kündigungsschaltfläche auf unserer Website möglich.</p>{% endif %}
+<p>Das Recht zur außerordentlichen Kündigung aus wichtigem Grund bleibt unberührt. Kündigungen bedürfen der Textform.</p>
+
+<h2>§ 3 Vergütung und Zahlung</h2>
+<p>Die Vergütung wird {{ {"monthly": "monatlich", "quarterly": "vierteljährlich", "yearly": "jährlich"}[c.billing_interval] }} {{ "im Voraus" if c.billing_mode == "advance" else "nachträglich" }} in Rechnung gestellt; angebrochene Zeiträume werden taggenau anteilig berechnet. Rechnungen werden als E-Rechnung (ZUGFeRD/EN 16931) per E-Mail übermittelt und sind innerhalb der auf der Rechnung angegebenen Frist ohne Abzug zahlbar.</p>
+<p>Bei Zahlungsverzug gelten die gesetzlichen Regelungen (§§ 286, 288 BGB).</p>
+
+<h2>§ 4 Verfügbarkeit, Pflege und Support</h2>
+<p>Der Anbieter stellt die Software mit einer Verfügbarkeit von 98 % im Monatsmittel bereit; ausgenommen sind angekündigte Wartungsfenster und Störungen außerhalb des Einflussbereichs des Anbieters. Updates und Fehlerbehebungen sind in der Vergütung enthalten. Support erfolgt per E-Mail an Werktagen (Mo–Fr, NRW) von 9 bis 17 Uhr.</p>
+
+<h2>§ 5 Nutzungsrechte und Pflichten des Kunden</h2>
+<p>Der Kunde erhält für die Vertragslaufzeit ein einfaches, nicht übertragbares Recht, die Software bestimmungsgemäß zu nutzen. Zugangsdaten sind geheim zu halten. Der Kunde ist für die Rechtmäßigkeit der von ihm verarbeiteten Daten verantwortlich.</p>
+
+<h2>§ 6 Datenschutz</h2>
+<p>Soweit der Anbieter personenbezogene Daten im Auftrag verarbeitet, schließen die Parteien einen Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO. Nach Vertragsende werden die Daten nach Wahl des Kunden herausgegeben und anschließend gelöscht, soweit keine gesetzlichen Aufbewahrungspflichten bestehen.</p>
+
+<h2>§ 7 Haftung</h2>
+<p>Der Anbieter haftet unbeschränkt bei Vorsatz und grober Fahrlässigkeit, für die Verletzung von Leben, Körper oder Gesundheit sowie nach dem Produkthaftungsgesetz. Bei leicht fahrlässiger Verletzung wesentlicher Vertragspflichten ist die Haftung auf den vertragstypischen, vorhersehbaren Schaden begrenzt{% if buyer.type == "b2b" %}, höchstens auf die Vergütung der letzten zwölf Monate{% endif %}. Im Übrigen ist die Haftung für leichte Fahrlässigkeit ausgeschlossen.</p>
+
+<h2>§ 8 Schlussbestimmungen</h2>
+<p>Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts.{% if buyer.type == "b2b" %} Gerichtsstand ist Düsseldorf.{% endif %} Änderungen bedürfen der Textform. Sollte eine Bestimmung unwirksam sein, bleibt der Vertrag im Übrigen wirksam.</p>
+{% if c.notes %}<h2>Ergänzende Vereinbarungen</h2><p>{{ c.notes }}</p>{% endif %}
+<p class="muted" style="margin-top:6mm">Hinweis: Mustervertrag – vor dem ersten Einsatz anwaltlich prüfen lassen.</p>
+</body>
+</html>

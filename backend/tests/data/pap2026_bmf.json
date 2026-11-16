@@ -1,0 +1,1322 @@
+[
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 60000,
+   "STKL": 1,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 0,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 150000,
+   "STKL": 1,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 925,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 250000,
+   "STKL": 1,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 18733,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 400000,
+   "STKL": 1,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 52450,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 650000,
+   "STKL": 1,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 124808,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 1100000,
+   "STKL": 1,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 305275,
+   "SOLZLZZ": 16147,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 60000,
+   "STKL": 2,
+   "KVZ": "2.90",
+   "PVZ": 0,
+   "R": 0,
+   "ZKF": "1",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 0,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 150000,
+   "STKL": 2,
+   "KVZ": "2.90",
+   "PVZ": 0,
+   "R": 0,
+   "ZKF": "1",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 0,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 250000,
+   "STKL": 2,
+   "KVZ": "2.90",
+   "PVZ": 0,
+   "R": 0,
+   "ZKF": "1",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 10250,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 400000,
+   "STKL": 2,
+   "KVZ": "2.90",
+   "PVZ": 0,
+   "R": 0,
+   "ZKF": "1",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 42533,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 650000,
+   "STKL": 2,
+   "KVZ": "2.90",
+   "PVZ": 0,
+   "R": 0,
+   "ZKF": "1",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 112458,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 1100000,
+   "STKL": 2,
+   "KVZ": "2.90",
+   "PVZ": 0,
+   "R": 0,
+   "ZKF": "1",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 291825,
+   "SOLZLZZ": 10483,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 60000,
+   "STKL": 3,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "1",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 0,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 150000,
+   "STKL": 3,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "1",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 0,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 250000,
+   "STKL": 3,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "1",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 0,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 400000,
+   "STKL": 3,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "1",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 20183,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 650000,
+   "STKL": 3,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "1",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 74800,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 1100000,
+   "STKL": 3,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "1",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 217350,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 60000,
+   "STKL": 4,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 0,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 150000,
+   "STKL": 4,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 925,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 250000,
+   "STKL": 4,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 18733,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 400000,
+   "STKL": 4,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 52450,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 650000,
+   "STKL": 4,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 124808,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 1100000,
+   "STKL": 4,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 305275,
+   "SOLZLZZ": 16147,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 60000,
+   "STKL": 5,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 5116,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 150000,
+   "STKL": 5,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 15283,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 250000,
+   "STKL": 5,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 46566,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 400000,
+   "STKL": 5,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 94491,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 650000,
+   "STKL": 5,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 181466,
+   "SOLZLZZ": 1414,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 1100000,
+   "STKL": 5,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 362850,
+   "SOLZLZZ": 19956,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 60000,
+   "STKL": 6,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 6700,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 150000,
+   "STKL": 6,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 17458,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 250000,
+   "STKL": 6,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 51000,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 400000,
+   "STKL": 6,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 98925,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 650000,
+   "STKL": 6,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 185900,
+   "SOLZLZZ": 1941,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 1100000,
+   "STKL": 6,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "R": 0,
+   "ZKF": "0",
+   "af": 0
+  },
+  "expected": {
+   "LSTLZZ": 367283,
+   "SOLZLZZ": 20200,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 820000,
+   "STKL": 1,
+   "KVZ": "3.40",
+   "PVZ": 0,
+   "PVA": "0",
+   "R": 1,
+   "ZKF": "2",
+   "af": 0,
+   "KRV": 1,
+   "ALV": 0,
+   "PKV": 0,
+   "SONSTB": 100000,
+   "JRE4": 9840000
+  },
+  "expected": {
+   "LSTLZZ": 221533,
+   "SOLZLZZ": 0,
+   "BK": 153241,
+   "STS": 42000,
+   "SOLZS": 0,
+   "BKS": 42000
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 40000,
+   "STKL": 1,
+   "KVZ": "2.90",
+   "PVZ": 0,
+   "PVA": "2",
+   "R": 1,
+   "ZKF": "1",
+   "af": 0,
+   "KRV": 0,
+   "ALV": 0,
+   "PKV": 0
+  },
+  "expected": {
+   "LSTLZZ": 0,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 1500000,
+   "STKL": 3,
+   "KVZ": "3.40",
+   "PVZ": 0,
+   "PVA": "2",
+   "R": 1,
+   "ZKF": "0",
+   "af": 0,
+   "KRV": 1,
+   "ALV": 1,
+   "PKV": 0,
+   "SONSTB": 100000,
+   "JRE4": 18000000
+  },
+  "expected": {
+   "LSTLZZ": 415550,
+   "SOLZLZZ": 9089,
+   "BK": 415550,
+   "STS": 42000,
+   "SOLZS": 2310,
+   "BKS": 42000
+  }
+ },
+ {
+  "input": {
+   "LZZ": 4,
+   "RE4": 50000,
+   "STKL": 6,
+   "KVZ": "3.40",
+   "PVZ": 1,
+   "PVA": "0",
+   "R": 1,
+   "ZKF": "1",
+   "af": 0,
+   "KRV": 0,
+   "ALV": 0,
+   "PKV": 0
+  },
+  "expected": {
+   "LSTLZZ": 17822,
+   "SOLZLZZ": 980,
+   "BK": 17822,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 3,
+   "RE4": 130000,
+   "STKL": 5,
+   "KVZ": "2.50",
+   "PVZ": 1,
+   "PVA": "0",
+   "R": 1,
+   "ZKF": "2",
+   "af": 0,
+   "KRV": 1,
+   "ALV": 0,
+   "PKV": 0
+  },
+  "expected": {
+   "LSTLZZ": 39532,
+   "SOLZLZZ": 0,
+   "BK": 39532,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 3,
+   "RE4": 205000,
+   "STKL": 4,
+   "KVZ": "2.50",
+   "PVZ": 0,
+   "PVA": "0",
+   "R": 0,
+   "ZKF": "0",
+   "af": 0,
+   "KRV": 1,
+   "ALV": 1,
+   "PKV": 0
+  },
+  "expected": {
+   "LSTLZZ": 57687,
+   "SOLZLZZ": 2156,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 1,
+   "RE4": 18000000,
+   "STKL": 2,
+   "KVZ": "3.40",
+   "PVZ": 1,
+   "PVA": "0",
+   "R": 1,
+   "ZKF": "1",
+   "af": 0,
+   "KRV": 1,
+   "ALV": 0,
+   "PKV": 1,
+   "PKPV": 65000,
+   "PKPVAGZ": 30000
+  },
+  "expected": {
+   "LSTLZZ": 6037900,
+   "SOLZLZZ": 309545,
+   "BK": 5628100,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 3,
+   "RE4": 375000,
+   "STKL": 6,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "PVA": "0",
+   "R": 0,
+   "ZKF": "1",
+   "af": 0,
+   "KRV": 0,
+   "ALV": 0,
+   "PKV": 0,
+   "SONSTB": 300000,
+   "JRE4": 375000
+  },
+  "expected": {
+   "LSTLZZ": 135397,
+   "SOLZLZZ": 7446,
+   "BK": 0,
+   "STS": 33500,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 320000,
+   "STKL": 5,
+   "KVZ": "2.50",
+   "PVZ": 1,
+   "PVA": "0",
+   "R": 1,
+   "ZKF": "2",
+   "af": 0,
+   "KRV": 1,
+   "ALV": 0,
+   "PKV": 0
+  },
+  "expected": {
+   "LSTLZZ": 80533,
+   "SOLZLZZ": 0,
+   "BK": 80533,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 320000,
+   "STKL": 1,
+   "KVZ": "2.90",
+   "PVZ": 0,
+   "PVA": "1",
+   "R": 1,
+   "ZKF": "2",
+   "af": 0,
+   "KRV": 0,
+   "ALV": 0,
+   "PKV": 1,
+   "PKPV": 65000,
+   "PKPVAGZ": 30000
+  },
+  "expected": {
+   "LSTLZZ": 33641,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 520000,
+   "STKL": 6,
+   "KVZ": "2.90",
+   "PVZ": 0,
+   "PVA": "0",
+   "R": 1,
+   "ZKF": "0.5",
+   "af": 0,
+   "KRV": 0,
+   "ALV": 0,
+   "PKV": 0,
+   "SONSTB": 100000,
+   "JRE4": 6240000
+  },
+  "expected": {
+   "LSTLZZ": 140475,
+   "SOLZLZZ": 0,
+   "BK": 140475,
+   "STS": 33800,
+   "SOLZS": 0,
+   "BKS": 33800
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 180000,
+   "STKL": 5,
+   "KVZ": "2.50",
+   "PVZ": 0,
+   "PVA": "2",
+   "R": 1,
+   "ZKF": "1",
+   "af": 0,
+   "KRV": 0,
+   "ALV": 0,
+   "PKV": 0
+  },
+  "expected": {
+   "LSTLZZ": 24075,
+   "SOLZLZZ": 0,
+   "BK": 24075,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 1500000,
+   "STKL": 5,
+   "KVZ": "3.40",
+   "PVZ": 0,
+   "PVA": "2",
+   "R": 0,
+   "ZKF": "2",
+   "af": 0,
+   "KRV": 1,
+   "ALV": 0,
+   "PKV": 1,
+   "PKPV": 65000,
+   "PKPVAGZ": 30000,
+   "SONSTB": 100000,
+   "JRE4": 18000000
+  },
+  "expected": {
+   "LSTLZZ": 575641,
+   "SOLZLZZ": 31660,
+   "BK": 0,
+   "STS": 42000,
+   "SOLZS": 2310,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 3,
+   "RE4": 80000,
+   "STKL": 2,
+   "KVZ": "3.40",
+   "PVZ": 1,
+   "PVA": "0",
+   "R": 0,
+   "ZKF": "0.5",
+   "af": 0,
+   "KRV": 0,
+   "ALV": 0,
+   "PKV": 0
+  },
+  "expected": {
+   "LSTLZZ": 6702,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 1,
+   "RE4": 3840000,
+   "STKL": 1,
+   "KVZ": "3.40",
+   "PVZ": 1,
+   "PVA": "0",
+   "R": 0,
+   "ZKF": "2",
+   "af": 0,
+   "KRV": 0,
+   "ALV": 1,
+   "PKV": 0
+  },
+  "expected": {
+   "LSTLZZ": 402000,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 520000,
+   "STKL": 1,
+   "KVZ": "3.40",
+   "PVZ": 0,
+   "PVA": "0",
+   "R": 0,
+   "ZKF": "2",
+   "af": 0,
+   "KRV": 1,
+   "ALV": 0,
+   "PKV": 0
+  },
+  "expected": {
+   "LSTLZZ": 101608,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 4,
+   "RE4": 1333,
+   "STKL": 6,
+   "KVZ": "3.40",
+   "PVZ": 1,
+   "PVA": "0",
+   "R": 0,
+   "ZKF": "0.5",
+   "af": 0,
+   "KRV": 0,
+   "ALV": 1,
+   "PKV": 1,
+   "PKPV": 45000,
+   "PKPVAGZ": 30000
+  },
+  "expected": {
+   "LSTLZZ": 169,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 520000,
+   "STKL": 6,
+   "KVZ": "3.40",
+   "PVZ": 0,
+   "PVA": "0",
+   "R": 0,
+   "ZKF": "0.5",
+   "af": 0,
+   "KRV": 0,
+   "ALV": 1,
+   "PKV": 0
+  },
+  "expected": {
+   "LSTLZZ": 139933,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 3,
+   "RE4": 130000,
+   "STKL": 4,
+   "KVZ": "2.50",
+   "PVZ": 1,
+   "PVA": "0",
+   "R": 0,
+   "ZKF": "1",
+   "af": 0,
+   "KRV": 0,
+   "ALV": 0,
+   "PKV": 0
+  },
+  "expected": {
+   "LSTLZZ": 22065,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 520000,
+   "STKL": 4,
+   "KVZ": "2.50",
+   "PVZ": 1,
+   "PVA": "0",
+   "R": 1,
+   "ZKF": "2",
+   "af": 0,
+   "KRV": 0,
+   "ALV": 1,
+   "PKV": 1,
+   "PKPV": 65000,
+   "PKPVAGZ": 30000
+  },
+  "expected": {
+   "LSTLZZ": 91225,
+   "SOLZLZZ": 0,
+   "BK": 63725,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 1,
+   "RE4": 480000,
+   "STKL": 2,
+   "KVZ": "2.90",
+   "PVZ": 1,
+   "PVA": "0",
+   "R": 0,
+   "ZKF": "0",
+   "af": 0,
+   "KRV": 0,
+   "ALV": 0,
+   "PKV": 0
+  },
+  "expected": {
+   "LSTLZZ": 0,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 3,
+   "RE4": 45000,
+   "STKL": 5,
+   "KVZ": "2.50",
+   "PVZ": 1,
+   "PVA": "0",
+   "R": 0,
+   "ZKF": "1",
+   "af": 0,
+   "KRV": 1,
+   "ALV": 0,
+   "PKV": 1,
+   "PKPV": 45000,
+   "PKPVAGZ": 30000,
+   "SONSTB": 300000,
+   "JRE4": 45000
+  },
+  "expected": {
+   "LSTLZZ": 8650,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 4700,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 180000,
+   "STKL": 1,
+   "KVZ": "2.50",
+   "PVZ": 0,
+   "PVA": "1",
+   "R": 0,
+   "ZKF": "0",
+   "af": 0,
+   "KRV": 1,
+   "ALV": 0,
+   "PKV": 0
+  },
+  "expected": {
+   "LSTLZZ": 9458,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ },
+ {
+  "input": {
+   "LZZ": 2,
+   "RE4": 320000,
+   "STKL": 1,
+   "KVZ": "2.50",
+   "PVZ": 1,
+   "PVA": "0",
+   "R": 0,
+   "ZKF": "0",
+   "af": 0,
+   "KRV": 0,
+   "ALV": 0,
+   "PKV": 0
+  },
+  "expected": {
+   "LSTLZZ": 33908,
+   "SOLZLZZ": 0,
+   "BK": 0,
+   "STS": 0,
+   "SOLZS": 0,
+   "BKS": 0
+  }
+ }
+]

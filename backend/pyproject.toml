@@ -1,0 +1,84 @@
+[project]
+name = "selbstlite-backend"
+version = "0.1.0"
+description = "selbstlite – Backend (FastAPI)"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi==0.162.7",
+    "uvicorn[standard]==0.54.0",
+    "pydantic==2.14.3",
+    "pydantic-settings==2.16.3",
+    "sqlalchemy[asyncio]==2.1.8",
+    "asyncpg==0.32.0",
+    "alembic==1.20.1",
+    "httpx==0.28.1",
+    "google-auth==2.62.2",
+    "requests==2.34.2",
+    "tzdata==2026.6",
+    "lxml==6.1.3",
+    "factur-x==7.9",
+    "pypdf==7.1.0",
+    "saxonche==13.1.1",
+    "segno==1.6.6",
+    "jinja2==3.1.6",
+    "weasyprint==70.0",
+    "python-multipart==0.0.33",
+    "anthropic==2.8.0",
+    "fints==5.0.1",
+    "pypdfium2==5.15.2",
+    "pillow==13.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.2.0",
+    "hypothesis==6.170.15",
+    "pytest-asyncio",
+    "mypy",
+    "ruff",
+]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.setuptools.package-data]
+"app.einvoice" = ["templates/*.html"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = "-q"
+
+[tool.ruff]
+line-length = 140
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "C4", "SIM", "RUF", "DTZ"]
+ignore = ["RUF001", "RUF002", "RUF003"]  # deutsche Umlaute/typografische Zeichen in Texten erlaubt
+
+[tool.ruff.lint.per-file-ignores]
+# In SQL werden nur Modul-Konstanten (Spaltenlisten) eingesetzt; alle Werte laufen als gebundene Parameter.
+"app/services/*.py" = ["S608"]
+"app/api/core_routes.py" = ["S608"]
+# Decimal ist unveränderlich – als Dataclass-Standardwert unbedenklich
+"app/domain/payroll.py" = ["RUF009"]
+# Migrationen: bereits angewendet und unveränderlich; lange DDL-Zeilen, Kontenplan aus Modul-Konstante
+"alembic/versions/*.py" = ["E501", "S608"]
+"tests/**" = ["S101", "S105", "S106", "S314", "S603", "S608", "E501"]  # Tests: feste SQL-Testdaten, Subprozess alembic
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+# Bibliotheken ohne Typinformationen
+module = ["lxml.*", "facturx.*", "saxonche.*", "weasyprint.*", "segno.*", "fints.*", "mt940.*", "pypdfium2.*"]
+ignore_missing_imports = true
+follow_untyped_imports = false

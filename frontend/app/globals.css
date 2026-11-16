@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+/* Dunkelmodus per Klasse (Schalter im Benutzermenü: System / Hell / Dunkel) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Markenfarbe: tiefes Indigo mit leichtem Violettstich */
+  --color-brand-50: #effcf9;
+  --color-brand-100: #c9f5ec;
+  --color-brand-200: #94eadb;
+  --color-brand-300: #58d7c6;
+  --color-brand-400: #2bbcac;
+  --color-brand-500: #12a093;
+  --color-brand-600: #0b8078;
+  --color-brand-700: #0d6662;
+  --color-brand-800: #10514f;
+  --color-brand-900: #124443;
+  --color-brand-950: #032828;
+  /* Neutrale Töne: kühles, sehr ruhiges Grau */
+  --color-slate-25: #fcfcfd;
+  --color-slate-50: #f7f7f9;
+  --color-slate-100: #f0f0f3;
+  --color-slate-200: #e4e4e9;
+  --color-slate-300: #d1d1d9;
+  --color-slate-400: #9d9daa;
+  --color-slate-500: #6e6e7c;
+  --color-slate-600: #51515e;
+  --color-slate-700: #3c3c47;
+  --color-slate-800: #26262e;
+  --color-slate-850: #1c1c22;
+  --color-slate-900: #16161b;
+  --color-slate-950: #0d0d10;
+  --shadow-card: 0 0 0 1px rgb(15 15 25 / 0.05), 0 1px 2px rgb(15 15 25 / 0.04), 0 2px 6px -2px rgb(15 15 25 / 0.04);
+  --shadow-raised: 0 0 0 1px rgb(15 15 25 / 0.06), 0 4px 12px -4px rgb(15 15 25 / 0.08), 0 12px 32px -12px rgb(15 15 25 / 0.12);
+  --shadow-pop: 0 0 0 1px rgb(15 15 25 / 0.08), 0 24px 60px -16px rgb(15 15 25 / 0.35);
+  --animate-in: fade-up 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
+  --animate-pop: pop 0.16s cubic-bezier(0.2, 0.7, 0.2, 1);
+  --animate-drawer: drawer 0.22s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Nur Bewegung, keine Transparenz: bleibt eine Animation hängen (Hintergrund-Tab, gedrosselte Darstellung),
+   ist der Inhalt trotzdem vollständig sichtbar. */
+@keyframes fade-up {
+  from { transform: translateY(6px); }
+  to { transform: none; }
+}
+@keyframes drawer {
+  from { transform: translateX(24px); }
+  to { transform: none; }
+}
+@keyframes pop {
+  from { transform: scale(0.98) translateY(-4px); }
+  to { transform: none; }
+}
+
+:root { color-scheme: light; }
+:root.dark { color-scheme: dark; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
+  font-feature-settings: "cv11", "ss01", "ss03";
+  overflow-wrap: break-word;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+  letter-spacing: -0.015em;
+}
+p { text-wrap: pretty; }
+
+::selection {
+  @apply bg-brand-200 text-brand-950;
+}
+
+:focus-visible {
+  @apply outline-2 outline-offset-2 outline-brand-500;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Native Formularelemente passend zum Farbschema */
+input[type="checkbox"], input[type="radio"] {
+  @apply size-4 shrink-0 accent-brand-600;
+}
+select {
+  @apply cursor-pointer appearance-none bg-no-repeat;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%239d9daa'%3E%3Cpath d='M5.3 7.3a1 1 0 0 1 1.4 0L10 10.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4z'/%3E%3C/svg%3E");
+  background-position: right 0.55rem center;
+  background-size: 1rem;
+}
+
+/* Feine Scrollbars */
+* { scrollbar-width: thin; scrollbar-color: rgb(157 157 170 / 0.4) transparent; }
+
+@media print {
+  aside, header[data-topbar] { display: none !important; }
+  body { background: white; }
+}
+
+/* Beträge in Tabellen nie umbrechen */
+td.tabular, td .tabular, td.text-right, th.text-right {
+  white-space: nowrap;
+}
+
+/* Sanfter Seitenwechsel */
+main > div > * { animation: var(--animate-in); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* Tabellen auf dem Handy als Karten: jede Zeile eine Karte, jede Zelle „Spalte: Wert“ */
+@media (max-width: 639px) {
+  table.responsive-table thead { display: none; }
+  table.responsive-table, table.responsive-table tbody { display: block; }
+  table.responsive-table tbody { border: 0; padding: 0 1.25rem; }
+  table.responsive-table tbody > tr {
+    display: block; margin: 0 0 0.75rem; padding: 0.75rem 0.9rem; border-radius: 0.875rem;
+    background: var(--color-slate-25); box-shadow: 0 0 0 1px rgb(15 15 25 / 0.06);
+  }
+  :root.dark table.responsive-table tbody > tr { background: rgb(255 255 255 / 0.03); box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06); }
+  table.responsive-table tbody > tr > td {
+    display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 1rem; align-items: baseline;
+    padding: 0.3rem 0 !important; text-align: right; white-space: normal;
+  }
+  table.responsive-table tbody > tr > td::before {
+    content: attr(data-label); grid-column: 1; grid-row: 1 / span 9; text-align: left;
+    font-size: 0.75rem; font-weight: 500; color: var(--color-slate-500);
+  }
+  /* alle Inhalte rechts untereinander (z. B. Datum + „in 2 Wochen“) */
+  table.responsive-table tbody > tr > td > * { grid-column: 2; justify-self: end; min-width: 0; }
+  table.responsive-table tbody > tr > td[data-label=""]::before { content: none; }
+  table.responsive-table tbody > tr > td[data-label=""] { grid-template-columns: minmax(0, 1fr); }
+  table.responsive-table tbody > tr > td[data-label=""] > * { grid-column: 1; }
+}

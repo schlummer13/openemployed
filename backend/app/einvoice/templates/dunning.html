@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>{{ s.title }} {{ number }}</title>
+<style>
+  @page { size: A4; margin: 20mm 20mm 40mm 25mm;
+    @bottom-left { content: element(footer); width: 165mm; vertical-align: top; padding-top: 5mm; } }
+  * { box-sizing: border-box; }
+  body { font-family: "DejaVu Sans", sans-serif; font-size: 9.5pt; color: #0f172a; line-height: 1.4; }
+  .head { display: flex; justify-content: flex-end; height: 27mm; }
+  .logo img { max-height: 20mm; max-width: 70mm; }
+  .seller-short { font-size: 7pt; color: #475569; border-bottom: 0.5pt solid #94a3b8; padding-bottom: 1mm; margin-bottom: 3mm; }
+  .address-row { display: flex; justify-content: space-between; min-height: 45mm; }
+  .address { width: 85mm; padding-top: 2mm; }
+  .meta { width: 70mm; } .meta table { width: 100%; border-collapse: collapse; }
+  .meta td { padding: 0.6mm 0; } .meta td:first-child { color: #475569; } .meta td:last-child { text-align: right; }
+  h1 { font-size: 14pt; margin: 6mm 0 3mm; }
+  table.claim { margin-top: 4mm; width: 110mm; border-collapse: collapse; }
+  table.claim td { padding: 1mm; border-bottom: 0.3pt solid #cbd5e1; }
+  table.claim td:last-child { text-align: right; white-space: nowrap; }
+  table.claim tr.total td { border-top: 0.8pt solid #0f172a; border-bottom: none; font-weight: bold; font-size: 10.5pt; }
+  .muted { color: #475569; } .small { font-size: 8pt; }
+  .pay { display: flex; gap: 6mm; align-items: center; margin-top: 6mm; padding: 3mm; border: 0.5pt solid #cbd5e1; border-radius: 1.5mm; }
+  .pay img { width: 26mm; height: 26mm; }
+  footer { position: running(footer); font-size: 7pt; color: #475569; width: 165mm; }
+  footer .cols { display: flex; gap: 6mm; border-top: 0.5pt solid #94a3b8; padding-top: 1.5mm; } footer .cols div { flex: 1; }
+</style>
+</head>
+<body>
+<footer><div class="cols">
+  <div>{{ s.seller.legal_name }}<br>{{ s.seller.street }}<br>{{ s.seller.postal_code }} {{ s.seller.city }}<br>Geschäftsführer: {{ s.seller.managing_directors | join(", ") }}</div>
+  <div>{% if s.seller.register_court %}{{ s.seller.register_court }}<br>{{ s.seller.register_number }}<br>{% endif %}{% if s.seller.vat_id %}USt-IdNr: {{ s.seller.vat_id }}{% endif %}</div>
+  <div>{% if s.seller.bank_name %}{{ s.seller.bank_name }}<br>{% endif %}{% if s.seller.iban %}IBAN: {{ s.seller.iban | iban }}<br>{% endif %}{% if s.seller.email %}{{ s.seller.email }}{% endif %}</div>
+</div></footer>
+
+<div class="head"><div class="logo">{% if logo %}<img src="{{ logo }}" alt="Logo">{% else %}<strong>{{ s.seller.legal_name }}</strong>{% endif %}</div></div>
+<div class="address-row">
+  <div class="address">
+    <div class="seller-short">{{ s.seller.legal_name }} · {{ s.seller.street }} · {{ s.seller.postal_code }} {{ s.seller.city }}</div>
+    <div>{{ s.buyer.name }}<br>{{ s.buyer.street }}<br>{{ s.buyer.postal_code }} {{ s.buyer.city }}</div>
+  </div>
+  <div class="meta"><table>
+    <tr><td>Datum</td><td>{{ s.notice_date | date }}</td></tr>
+    <tr><td>Unser Zeichen</td><td>{{ number }}</td></tr>
+    <tr><td>Rechnung</td><td>{{ s.invoice.number }}</td></tr>
+    <tr><td>Kunden-Nr.</td><td>{{ s.buyer.number }}</td></tr>
+    <tr><td>Zahlbar bis</td><td><strong>{{ s.deadline | date }}</strong></td></tr>
+  </table></div>
+</div>
+
+<h1>{{ s.title }}</h1>
+<p>{% if s.b2b %}Sehr geehrte Damen und Herren,{% else %}Guten Tag {{ s.buyer.name }},{% endif %}</p>
+{% if s.level == 1 %}
+<p>sicher ist es Ihrer Aufmerksamkeit entgangen: Unsere Rechnung {{ s.invoice.number }} vom {{ s.invoice.issue_date | date }} war am {{ s.invoice.due_date | date }} zur Zahlung fällig. Bis heute konnten wir keinen vollständigen Zahlungseingang feststellen.</p>
+{% else %}
+<p>leider ist unsere Rechnung {{ s.invoice.number }} vom {{ s.invoice.issue_date | date }} trotz {% for p in s.previous %}{{ p.title }} vom {{ p.date | date }}{% if not loop.last %} und {% endif %}{% endfor %} weiterhin nicht vollständig beglichen.
+{% if s.default_from %}Sie befinden sich seit dem {{ s.default_from | date }} in Zahlungsverzug.{% endif %}</p>
+{% endif %}
+
+<table class="claim">
+  <tr><td>Rechnungsbetrag {{ s.invoice.number }}</td><td>{{ s.invoice.gross | euro }}</td></tr>
+  {% if s.paid | float > 0 %}<tr><td>abzüglich Zahlungen (verrechnet nach § 367 BGB)</td><td>{{ s.paid | neg | euro }}</td></tr>{% endif %}
+  <tr><td>Offene Hauptforderung</td><td>{{ s.principal_open | euro }}</td></tr>
+  {% if s.interest | float > 0 %}<tr><td>Verzugszinsen ab {{ s.default_from | date }}<br><span class="small muted">{{ s.interest_rate_note }}</span></td><td>{{ s.interest | euro }}</td></tr>{% endif %}
+  {% if s.costs_before | float > 0 %}<tr><td>Kosten aus vorherigen Schreiben</td><td>{{ s.costs_before | euro }}</td></tr>{% endif %}
+  {% if s.fee | float > 0 %}<tr><td>{{ s.fee_label }}</td><td>{{ s.fee | euro }}</td></tr>{% endif %}
+  <tr class="total"><td>Zu zahlender Betrag</td><td>{{ s.total | euro }}</td></tr>
+</table>
+
+<p>Bitte überweisen Sie den Betrag bis zum <strong>{{ s.deadline | date }}</strong>.
+{% if s.level == 1 %}Sollte sich Ihre Zahlung mit diesem Schreiben überschnitten haben, betrachten Sie es bitte als gegenstandslos.{% endif %}</p>
+{% if s.level == 3 %}
+<p><strong>Dies ist unsere letzte Mahnung.</strong> Sollte der Betrag bis zum genannten Datum nicht bei uns eingegangen sein, werden wir ohne weitere Ankündigung ein gerichtliches Mahnverfahren einleiten bzw. die Forderung an ein Inkassounternehmen übergeben. Die dadurch entstehenden Kosten gehen zu Ihren Lasten.</p>
+{% endif %}
+{% if s.interest | float > 0 %}<p class="small muted">Verzugszinsen laufen bis zum Zahlungseingang weiter. Zinsen und Kosten sind Schadensersatz und unterliegen nicht der Umsatzsteuer.</p>{% endif %}
+<p>Bei Fragen oder Unstimmigkeiten melden Sie sich bitte umgehend bei uns.</p>
+<p>Mit freundlichen Grüßen<br>{{ s.seller.legal_name }}</p>
+
+{% if s.seller.iban %}
+<div class="pay">
+  {% if girocode %}<img src="{{ girocode }}" alt="GiroCode">{% endif %}
+  <div><strong>{{ s.total | euro }} bis {{ s.deadline | date }}</strong><br>Empfänger: {{ s.seller.legal_name }}<br>
+  IBAN: {{ s.seller.iban | iban }}{% if s.seller.bic %} · BIC: {{ s.seller.bic }}{% endif %}<br>Verwendungszweck: {{ s.invoice.number }} {{ number }}</div>
+</div>
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>{{ title }} {{ number }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 20mm 40mm 25mm;
+    @bottom-left { content: element(footer); width: 165mm; vertical-align: top; padding-top: 5mm; }
+  }
+  * { box-sizing: border-box; }
+  body { font-family: "DejaVu Sans", sans-serif; font-size: 9pt; color: #0f172a; line-height: 1.35; }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; height: 27mm; }
+  .logo img { max-height: 20mm; max-width: 70mm; }
+  .seller-short { font-size: 7pt; color: #475569; border-bottom: 0.5pt solid #94a3b8; padding-bottom: 1mm; margin-bottom: 3mm; }
+  /* DIN 5008 Form B: Anschriftfeld 45 mm von oben, 20 mm von links → bei 20 mm Seitenrand 25 mm im Fluss */
+  .address-row { display: flex; justify-content: space-between; margin-top: 0; min-height: 45mm; }
+  .address { width: 85mm; padding-top: 2mm; }
+  .meta { width: 70mm; }
+  .meta table { width: 100%; border-collapse: collapse; }
+  .meta td { padding: 0.6mm 0; }
+  .meta td:first-child { color: #475569; }
+  .meta td:last-child { text-align: right; }
+  h1 { font-size: 14pt; margin: 6mm 0 3mm; }
+  table.lines { width: 100%; border-collapse: collapse; margin-top: 4mm; }
+  table.lines th { text-align: left; font-weight: bold; font-size: 8pt; border-bottom: 0.8pt solid #0f172a; padding: 1.5mm 1mm; }
+  table.lines td { border-bottom: 0.3pt solid #cbd5e1; padding: 1.5mm 1mm; vertical-align: top; }
+  table.lines .num { text-align: right; white-space: nowrap; }
+  table.lines tr { page-break-inside: avoid; }
+  .totals { margin-left: auto; width: 80mm; margin-top: 3mm; border-collapse: collapse; }
+  .totals td { padding: 0.8mm 1mm; }
+  .totals td:last-child { text-align: right; white-space: nowrap; }
+  .totals .grand td { border-top: 0.8pt solid #0f172a; font-weight: bold; font-size: 10.5pt; padding-top: 1.5mm; }
+  .muted { color: #475569; }
+  .notes p { margin: 1.5mm 0; }
+  .pay { display: flex; gap: 6mm; align-items: center; margin-top: 6mm; padding: 3mm; border: 0.5pt solid #cbd5e1; border-radius: 1.5mm; page-break-inside: avoid; }
+  .pay img { width: 26mm; height: 26mm; }
+  footer { position: running(footer); font-size: 7pt; color: #475569; width: 165mm; }
+  footer .cols { display: flex; gap: 6mm; border-top: 0.5pt solid #94a3b8; padding-top: 1.5mm; }
+  footer .cols div { flex: 1; }
+  footer .page { text-align: right; margin-top: 1.5mm; }
+  footer .page::after { content: "Seite " counter(page) " von " counter(pages); }
+</style>
+</head>
+<body>
+<footer>
+  <div class="cols">
+    <div>{{ s.seller.legal_name }}<br>{{ s.seller.street }}<br>{{ s.seller.postal_code }} {{ s.seller.city }}<br>
+      Geschäftsführer: {{ s.seller.managing_directors | join(", ") }}</div>
+    <div>{% if s.seller.register_court %}{{ s.seller.register_court }}<br>{{ s.seller.register_number }}<br>{% endif %}
+      {% if s.seller.tax_number %}Steuernummer: {{ s.seller.tax_number }}<br>{% endif %}
+      {% if s.seller.vat_id %}USt-IdNr: {{ s.seller.vat_id }}{% endif %}</div>
+    <div>{% if s.seller.bank_name %}{{ s.seller.bank_name }}<br>{% endif %}
+      {% if s.seller.iban %}IBAN: {{ s.seller.iban | iban }}<br>{% endif %}
+      {% if s.seller.bic %}BIC: {{ s.seller.bic }}<br>{% endif %}
+      {% if s.seller.email %}{{ s.seller.email }}{% endif %}{% if s.seller.phone %} · {{ s.seller.phone }}{% endif %}</div>
+  </div>
+  <div class="page"></div>
+</footer>
+
+<div class="head">
+  <div></div>
+  <div class="logo">{% if logo %}<img src="{{ logo }}" alt="Logo">{% else %}<strong>{{ s.seller.legal_name }}</strong>{% endif %}</div>
+</div>
+
+<div class="address-row">
+  <div class="address">
+    <div class="seller-short">{{ s.seller.legal_name }} · {{ s.seller.street }} · {{ s.seller.postal_code }} {{ s.seller.city }}</div>
+    <div>{{ s.buyer.name }}<br>{{ s.buyer.street }}<br>{{ s.buyer.postal_code }} {{ s.buyer.city }}</div>
+  </div>
+  <div class="meta">
+    <table>
+      <tr><td>{{ title }} Nr.</td><td><strong>{{ number }}</strong></td></tr>
+      {% if offer %}
+      <tr><td>Angebotsdatum</td><td>{{ s.issue_date | date }}</td></tr>
+      <tr><td>Gültig bis</td><td>{{ s.valid_until | date }}</td></tr>
+      {% else %}
+      <tr><td>Rechnungsdatum</td><td>{{ s.issue_date | date }}</td></tr>
+      <tr><td>Leistung</td><td>{{ s.service_period.from | date }}{% if s.service_period.to %} – {{ s.service_period.to | date }}{% endif %}</td></tr>
+      {% endif %}
+      <tr><td>Kunden-Nr.</td><td>{{ s.buyer.number }}</td></tr>
+      {% if s.buyer.buyer_reference %}<tr><td>Ihre Referenz</td><td>{{ s.buyer.buyer_reference }}</td></tr>{% endif %}
+      {% if s.buyer.vat_id %}<tr><td>Ihre USt-IdNr</td><td>{{ s.buyer.vat_id }}</td></tr>{% endif %}
+      {% if not credit and not offer %}<tr><td>Fällig am</td><td>{{ s.due_date | date }}</td></tr>{% endif %}
+    </table>
+  </div>
+</div>
+
+<h1>{{ title }} {{ number }}</h1>
+{% if s.intro_text %}<p>{{ s.intro_text }}</p>{% endif %}
+
+<table class="lines">
+  <thead><tr>
+    <th>Pos.</th><th>Bezeichnung</th><th class="num">Menge</th>
+    <th class="num">Einzelpreis {{ "brutto" if gross else "netto" }}</th><th class="num">USt</th>
+    <th class="num">Betrag {{ "brutto" if gross else "netto" }}</th>
+  </tr></thead>
+  <tbody>
+  {% for l in s.lines %}
+    <tr>
+      <td>{{ l.position }}</td>
+      <td>{{ l.description }}{% if offer and l.recurring %}<br><span class="muted">monatlich wiederkehrend</span>{% endif %}</td>
+      <td class="num">{{ l.quantity | qty }} {{ l.unit_code | unit }}</td>
+      <td class="num">{{ (l.unit_price_gross if gross else l.unit_price_net) | euro }}</td>
+      <td class="num">{{ l.rate | rate }} %</td>
+      <td class="num">{{ (l.line_gross if gross else l.line_net) | euro }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<table class="totals">
+  <tr><td class="muted">Summe netto</td><td>{{ s.totals.net | euro }}</td></tr>
+  {% for b in s.tax_breakdown %}
+  <tr><td class="muted">USt {{ b.rate | rate }} % auf {{ b.taxable_amount | euro }}</td><td>{{ b.tax_amount | euro }}</td></tr>
+  {% endfor %}
+  {% if s.totals.gross_target and s.totals.gross_deviation | float != 0 %}
+  <tr><td class="muted">Summe Positionen brutto</td><td>{{ s.totals.gross_target | euro }}</td></tr>
+  <tr><td class="muted">Rundungsausgleich zu Ihren Gunsten</td><td>{{ s.totals.gross_deviation | neg | euro }}</td></tr>
+  {% endif %}
+  <tr class="grand"><td>Gesamtbetrag</td><td>{{ s.totals.gross | euro }}</td></tr>
+  {% if s.tax_eur is not none and s.currency != "EUR" %}
+  <tr><td class="muted">Umsatzsteuer in Euro (Kurs {{ s.exchange_rate }} {{ s.currency }}/EUR, EZB)</td><td>{{ s.tax_eur | eur }}</td></tr>
+  {% endif %}
+</table>
+
+<div class="notes">
+  {% if s.cancellation_reason %}<p>Grund: {{ s.cancellation_reason }}</p>{% endif %}
+  {% for n in s.notes %}<p class="muted">{{ n }}</p>{% endfor %}
+  {% if s.closing_text %}<p>{{ s.closing_text }}</p>{% endif %}
+</div>
+
+{% if not credit and not offer and s.seller.iban %}
+<div class="pay">
+  {% if girocode %}<img src="{{ girocode }}" alt="GiroCode">{% endif %}
+  <div>
+    <strong>Bitte überweisen Sie {{ s.totals.gross | euro }} bis zum {{ s.due_date | date }}.</strong><br>
+    Empfänger: {{ s.seller.legal_name }}<br>
+    IBAN: {{ s.seller.iban | iban }}{% if s.seller.bic %} · BIC: {{ s.seller.bic }}{% endif %}<br>
+    Verwendungszweck: {{ number }}
+    {% if girocode %}<br><span class="muted">QR-Code mit der Banking-App scannen (GiroCode).</span>{% endif %}
+  </div>
+</div>
+{% endif %}
+</body>
+</html>

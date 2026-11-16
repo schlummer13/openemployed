@@ -1,0 +1,333 @@
+# selbstlite – kompletter Stack (Entwicklung und Produktion)
+# Start:  make secrets && make up
+# Alle Zugangsdaten kommen aus .env (siehe .env.example), nie aus dieser Datei.
+
+name: selbstlite
+
+x-restart: &restart
+  restart: unless-stopped
+
+services:
+  # ─────────────────────────── Datenbank ───────────────────────────
+  postgres:
+    <<: *restart
+    image: postgres:17-alpine
+    # Abgestimmt auf einen kleinen Server (2–4 GB RAM); Datensicherheit bleibt (synchronous_commit, fsync an)
+    command: ["postgres", "-c", "shared_buffers=256MB", "-c", "effective_cache_size=768MB", "-c", "work_mem=8MB",
+              "-c", "maintenance_work_mem=64MB", "-c", "max_connections=150", "-c", "random_page_cost=1.1",
+              "-c", "checkpoint_completion_target=0.9", "-c", "wal_compression=on", "-c", "log_min_duration_statement=500"]
+    shm_size: 256mb
+    environment:
+      POSTGRES_USER: ${POSTGRES_SUPERUSER:?}
+      POSTGRES_PASSWORD: ${POSTGRES_SUPERUSER_PASSWORD:?}
+      POSTGRES_DB: postgres
+      # werden vom Init-Skript gelesen
+      SELBSTLITE_MIGRATOR_PASSWORD: ${SELBSTLITE_MIGRATOR_PASSWORD:?}
+      SELBSTLITE_APP_PASSWORD: ${SELBSTLITE_APP_PASSWORD:?}
+      SELBSTLITE_LEDGER_PASSWORD: ${SELBSTLITE_LEDGER_PASSWORD:?}
+      DOCUMENSO_DB_PASSWORD: ${DOCUMENSO_DB_PASSWORD:?}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      # -h 127.0.0.1: während der Initialisierung lauscht Postgres nur auf dem Unix-Socket → kein falsches „bereit“
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U $${POSTGRES_USER} -d postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  # ─────────────────────── Festschreibung (Rust) ───────────────────────
+  ledger:
+    <<: *restart
+    build: ./ledger
+    environment:
+      LEDGER_BIND: 0.0.0.0:8080
+      LEDGER_DATABASE_URL: postgres://selbstlite_ledger:${SELBSTLITE_LEDGER_PASSWORD}@postgres:5432/selbstlite
+      LEDGER_MIGRATOR_DATABASE_URL: postgres://selbstlite_migrator:${SELBSTLITE_MIGRATOR_PASSWORD}@postgres:5432/selbstlite
+      LEDGER_INTERNAL_TOKEN: ${LEDGER_INTERNAL_TOKEN:?}
+      RUST_LOG: ${LEDGER_LOG:-info}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/app/ledger", "healthcheck"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  # ─────────────────────────── Backend (Python) ───────────────────────────
+  backend:
+    <<: *restart
+    networks: [default, sandbox]
+    build:
+      context: ./backend
+      target: runtime
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      DATABASE_URL: postgresql+asyncpg://selbstlite_app:${SELBSTLITE_APP_PASSWORD}@postgres:5432/selbstlite
+      MIGRATOR_DATABASE_URL: postgresql+asyncpg://selbstlite_migrator:${SELBSTLITE_MIGRATOR_PASSWORD}@postgres:5432/selbstlite
+      LEDGER_URL: http://ledger:8080
+      # Anzahl Server-Prozesse (Hintergrundjobs sind per Datenbank-Sperre gegen Doppelausführung geschützt)
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY:-2}
+      LEDGER_INTERNAL_TOKEN: ${LEDGER_INTERNAL_TOKEN:?}
+      SANDBOX_URL: http://sandbox:8000
+      SANDBOX_TOKEN: ${SANDBOX_TOKEN:-${LEDGER_INTERNAL_TOKEN}}
+      TENANT_ID: ${TENANT_ID:?}
+      APP_ORIGIN: ${APP_ORIGIN:?}
+      PORTAL_ORIGIN: ${PORTAL_ORIGIN:-}
+      # Anmeldung mit Google Workspace (keine Rollen)
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      AUTH_ALLOWED_DOMAIN: ${AUTH_ALLOWED_DOMAIN:-}
+      AUTH_ALLOWED_EMAILS: ${AUTH_ALLOWED_EMAILS:-}
+      SESSION_SECRET: ${SESSION_SECRET:?}
+      DEV_LOGIN_ENABLED: ${DEV_LOGIN_ENABLED:-false}
+      # E-Mail über Google Workspace (SMTP/IMAP)
+      MAIL_PROVIDER: ${MAIL_PROVIDER:-google}
+      MAIL_AUTH_MODE: ${MAIL_AUTH_MODE:-service_account}
+      MAIL_MAILBOX: ${MAIL_MAILBOX:-}
+      MAIL_FROM_NAME: ${MAIL_FROM_NAME:-}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_APP_PASSWORD: ${MAIL_APP_PASSWORD:-}
+      MAIL_SERVICE_ACCOUNT_FILE: /run/secrets/selbstlite/google-mail-service-account.json
+      MAIL_IMAP_MAILBOX: ${MAIL_IMAP_MAILBOX:-}
+      MAIL_IMAP_FOLDER: ${MAIL_IMAP_FOLDER:-INBOX}
+      MAIL_PROCESSED_FOLDER: ${MAIL_PROCESSED_FOLDER:-selbstlite-verarbeitet}
+      MS_TENANT_ID: ${MS_TENANT_ID:-}
+      MS_CLIENT_ID: ${MS_CLIENT_ID:-}
+      MS_CLIENT_SECRET: ${MS_CLIENT_SECRET:-}
+      # Leer = Voreinstellung des Anbieters. Lokaler Test: MAIL_AUTH_MODE=local + SMTP_HOST=mailpit, SMTP_PORT=1025
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-0}
+      SMTP_SECURITY: ${SMTP_SECURITY:-auto}
+      IMAP_HOST: ${IMAP_HOST:-}
+      IMAP_PORT: ${IMAP_PORT:-0}
+      DOCUMENSO_URL: http://documenso:3000
+      # Leer lassen: OpenEmployed richtet Konto, Team, API-Token und Webhook beim Start selbst ein
+      DOCUMENSO_API_TOKEN: ${DOCUMENSO_API_TOKEN:-}
+      DOCUMENSO_DATABASE_URL: postgres://documenso:${DOCUMENSO_DB_PASSWORD}@postgres:5432/documenso
+      DOCUMENSO_ADMIN_EMAIL: ${DOCUMENSO_ADMIN_EMAIL:-}
+      DOCUMENSO_PUBLIC_URL: ${DOCUMENSO_PUBLIC_URL:-}
+      DOCUMENSO_WEBHOOK_SECRET: ${DOCUMENSO_WEBHOOK_SECRET:?}
+      # KI-Belegerkennung und Kontierung (Claude) – nur auf Klick bzw. für das Belegpostfach
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      EXTRACTION_MODEL: ${EXTRACTION_MODEL:-claude-opus-5-5}
+      # Bank: FinTS-Produkt-ID der Deutschen Kreditwirtschaft für den Abruf per Onlinebanking
+      FINTS_PRODUCT_ID: ${FINTS_PRODUCT_ID:-}
+      # ELSTER (UStVA-Übertragung): ERiC nach secrets/eric legen, Hersteller-ID und Zertifikat (secrets/elster.pfx) hinterlegen
+      COMPANY_STATE: ${COMPANY_STATE:-NW}
+      ERIC_HOME: ${ERIC_HOME:-/run/secrets/selbstlite/eric}
+      ELSTER_HERSTELLER_ID: ${ELSTER_HERSTELLER_ID:-}
+      ELSTER_CERT_PATH: /run/secrets/selbstlite/elster.pfx
+      ELSTER_TEST_MODE: ${ELSTER_TEST_MODE:-true}
+      TRADE_TAX_MULTIPLIER: ${TRADE_TAX_MULTIPLIER:-440}
+      # KI: "auto" = lokale KI (Ollama-Dienst unten), "anthropic" = Claude-API, "none" = aus
+      AI_PROVIDER: ${AI_PROVIDER:-auto}
+      OLLAMA_URL: ${OLLAMA_URL:-http://ollama:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5vl:7b}
+    volumes:
+      - ./secrets:/run/secrets/selbstlite:ro
+      # Sicherungen anzeigen/anstoßen (Einstellungen → System); geschrieben wird nur die Anforderungsdatei
+      - ${BACKUP_PATH:-./backups}:/backups
+      # Archiv-Spiegelung auf Festplatte/NAS: Pfad auf dem Server (z. B. eingehängte USB-Platte /mnt/archiv)
+      - ${ARCHIVE_EXPORT_PATH:-./exports}:/exports
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ledger:
+        condition: service_healthy
+    # Nur auf localhost des Servers – nginx (Reverse Proxy auf dem Host) leitet /api/* hierher
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${BACKEND_PORT:-8311}:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/api/health/live', timeout=2).status==200 else 1)"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  # ─────────────────────────── Frontend (Next.js) ───────────────────────────
+  frontend:
+    <<: *restart
+    build: ./frontend
+    environment:
+      NODE_ENV: production
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${FRONTEND_PORT:-8310}:3000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/login').then(r=>process.exit(r.status<500?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  # ─────────────────────────── Dokumentenspeicher (WORM) ───────────────────────────
+  # Folgt in Phase 1. MinIO veröffentlicht keine offiziellen Images mehr (Stand 11/2026).
+  # Kandidat: S3-kompatibler Speicher mit Object Lock (z. B. SeaweedFS) – wird vor dem Einbau
+  # mit einem Test auf echte Löschsperre (COMPLIANCE-Modus) geprüft. Siehe docs/konzept/10 (T7).
+
+  # ─────────────────────────── Signatur (Documenso, self-hosted) ───────────────────────────
+  documenso:
+    <<: *restart
+    # Vor Produktion auf eine feste Version pinnen (DOCUMENSO_IMAGE in .env)
+    # Feste Version: die automatische Einrichtung ist mit diesem Datenbankschema getestet
+    image: ${DOCUMENSO_IMAGE:-documenso/documenso:v2.21.1}
+    environment:
+      PORT: 3000
+      NEXTAUTH_SECRET: ${DOCUMENSO_NEXTAUTH_SECRET:?}
+      NEXT_PRIVATE_ENCRYPTION_KEY: ${DOCUMENSO_ENCRYPTION_KEY:?}
+      NEXT_PRIVATE_ENCRYPTION_SECONDARY_KEY: ${DOCUMENSO_ENCRYPTION_SECONDARY_KEY:?}
+      NEXTAUTH_URL: ${DOCUMENSO_PUBLIC_URL:?}
+      NEXT_PUBLIC_WEBAPP_URL: ${DOCUMENSO_PUBLIC_URL:?}
+      NEXT_PRIVATE_INTERNAL_WEBAPP_URL: http://documenso:3000
+      NEXT_PRIVATE_DATABASE_URL: postgres://documenso:${DOCUMENSO_DB_PASSWORD}@postgres:5432/documenso
+      NEXT_PRIVATE_DIRECT_DATABASE_URL: postgres://documenso:${DOCUMENSO_DB_PASSWORD}@postgres:5432/documenso
+      NEXT_PUBLIC_UPLOAD_TRANSPORT: database
+      # Documenso kann kein OAuth für SMTP → App-Passwort eines Workspace-Postfachs (z. B. sign@…)
+      NEXT_PRIVATE_SMTP_TRANSPORT: smtp-auth
+      NEXT_PRIVATE_SMTP_HOST: ${DOCUMENSO_SMTP_HOST:-smtp.gmail.com}
+      NEXT_PRIVATE_SMTP_PORT: ${DOCUMENSO_SMTP_PORT:-587}
+      NEXT_PRIVATE_SMTP_SECURE: ${DOCUMENSO_SMTP_SECURE:-false}   # false = STARTTLS (587), true = TLS (465)
+      NEXT_PRIVATE_SMTP_USERNAME: ${DOCUMENSO_SMTP_USERNAME:-}
+      NEXT_PRIVATE_SMTP_PASSWORD: ${DOCUMENSO_SMTP_APP_PASSWORD:-}
+      NEXT_PRIVATE_SMTP_FROM_NAME: ${DOCUMENSO_SMTP_FROM_NAME:-Signatur}
+      NEXT_PRIVATE_SMTP_FROM_ADDRESS: ${DOCUMENSO_SMTP_USERNAME:-noreply@localhost}
+      # Optional: Anmeldung bei Documenso mit Google (eigener OAuth-Client, ⚠️ Variablennamen der Version prüfen)
+      NEXT_PRIVATE_GOOGLE_CLIENT_ID: ${DOCUMENSO_GOOGLE_CLIENT_ID:-}
+      NEXT_PRIVATE_GOOGLE_CLIENT_SECRET: ${DOCUMENSO_GOOGLE_CLIENT_SECRET:-}
+      NEXT_PRIVATE_SIGNING_LOCAL_FILE_PATH: /opt/documenso/cert.p12
+      NEXT_PRIVATE_SIGNING_PASSPHRASE: ${DOCUMENSO_SIGNING_PASSPHRASE:?}
+      NEXT_PUBLIC_DISABLE_SIGNUP: ${DOCUMENSO_DISABLE_SIGNUP:-false}
+      # Webhooks an das interne Backend erlauben (sonst blockiert Documenso private Adressen)
+      NEXT_PRIVATE_WEBHOOK_SSRF_BYPASS_HOSTS: backend
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${DOCUMENSO_PORT:-8312}:3000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    volumes:
+      - ./infra/documenso/cert.p12:/opt/documenso/cert.p12:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ─────────────────────── Reverse Proxy (nur lokale Entwicklung) ───────────────────────
+  # Produktion: nginx auf dem Host (infra/nginx/selbstlite.conf) – Caddy wird dort nicht gestartet.
+  # Lokal mit Subdomains (localhost, portal.localhost, sign.localhost): docker compose --profile lokal up -d
+  caddy:
+    <<: *restart
+    image: caddy:2-alpine
+    profiles: ["lokal"]
+    environment:
+      APP_SITE: ${APP_SITE:-http://localhost}
+      SIGN_SITE: ${SIGN_SITE:-http://sign.localhost}
+      PORTAL_SITE: ${PORTAL_SITE:-http://portal.localhost}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infra/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - frontend
+      - backend
+      - documenso
+
+  # ─────────────────────── Test-Postfach (nur lokal) ───────────────────────
+  # Fängt alle ausgehenden Mails ab (Rechnungen, Willkommensmail, Mahnungen, Berichte) – Ansicht: http://localhost:8025
+  mailpit:
+    <<: *restart
+    image: axllent/mailpit:v1.21.8
+    profiles: ["lokal"]
+    environment:
+      MP_MAX_MESSAGES: 2000
+      TZ: Europe/Berlin
+    ports:
+      - "127.0.0.1:8025:8025"
+
+  # ─────────────────────── Datensicherung ───────────────────────
+  backup:
+    <<: *restart
+    image: postgres:17-alpine
+    entrypoint: ["/bin/sh", "/backup.sh"]
+    environment:
+      POSTGRES_USER: ${POSTGRES_SUPERUSER:?}
+      POSTGRES_PASSWORD: ${POSTGRES_SUPERUSER_PASSWORD:?}
+      BACKUP_HOUR: ${BACKUP_HOUR:-2}
+      TZ: Europe/Berlin
+    volumes:
+      - ./infra/backup/backup.sh:/backup.sh:ro
+      - ${BACKUP_PATH:-./backups}:/backups
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ─────────────────────── Lokale KI (Ollama + Qwen) ───────────────────────
+  # Läuft immer mit; das Modell wird beim ersten Start automatisch geladen (Volume ollama-data, nur einmal).
+  # Belegerkennung und KI-Kontierung laufen damit vollständig auf dem eigenen Server – keine Daten an Dritte.
+  # Modellwahl über OLLAMA_MODEL: qwen2.5vl:7b (Standard, ~6 GB, ≥ 12 GB RAM empfohlen) oder qwen2.5vl:3b (~3 GB, für 8 GB).
+  # Mit NVIDIA-GPU den deploy-Abschnitt einkommentieren (deutlich schneller).
+  ollama:
+    <<: *restart
+    image: ${OLLAMA_IMAGE:-ollama/ollama:0.12.6}
+    entrypoint: ["/bin/sh", "/entrypoint.sh"]
+    environment:
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5vl:7b}
+      OLLAMA_KEEP_ALIVE: 30m
+      OLLAMA_NUM_PARALLEL: 1
+      OLLAMA_MAX_LOADED_MODELS: 1
+    volumes:
+      - ./infra/ollama/entrypoint.sh:/entrypoint.sh:ro
+      - ollama-data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices: [{ driver: nvidia, count: all, capabilities: [gpu] }]
+
+# Netzwerk: Standardnetz von Compose. Veröffentlicht werden nur Frontend, Backend und Documenso – und zwar
+# ausschließlich auf 127.0.0.1 (BIND_ADDRESS). Von außen erreichbar ist nur nginx auf dem Host (80/443).
+# Datenbank und Ledger haben keine Ports.
+
+  # ─────────────────────── Sandbox für Python-Schritte in Workflows ───────────────────────
+  # Schreibgeschützt, ohne Rechte; jeder Schritt mit CPU-/Speicher-/Zeitlimit. Internet nur für öffentliche Adressen (requests).
+  sandbox:
+    <<: *restart
+    build: ./infra/sandbox
+    environment:
+      SANDBOX_TOKEN: ${SANDBOX_TOKEN:-${LEDGER_INTERNAL_TOKEN}}
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 512m
+    pids_limit: 64
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2).status==200 else 1)"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    # sandbox: Verbindung zum Backend (intern); sandbox-egress: Internet für requests (interne Adressen blockt die Sandbox selbst)
+    networks: [sandbox, sandbox-egress]
+
+networks:
+  sandbox:
+    internal: true
+  sandbox-egress: {}
+
+volumes:
+  ollama-data:
+  postgres-data:
+  caddy-data:
+  caddy-config:

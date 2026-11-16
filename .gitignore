@@ -1,0 +1,46 @@
+# Geheimnisse
+.env
+infra/documenso/cert.p12
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+
+# Rust
+ledger/target/
+
+# Node
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# System
+.DS_Store
+
+# Schlüsseldateien
+secrets/*
+!secrets/README.md
+
+# Datensicherungen (enthalten personenbezogene Daten)
+backups/
+exports/
+
+# Build-Reste
+*.egg-info/
+*.tsbuildinfo
+
+# Interne Planung der eigenen UG (nicht öffentlich)
+docs/konzept/
+
+# Claude-/KI-Werkzeug-Dateien (nie veröffentlichen)
+.claude/
+**/.claude/
+CLAUDE.md
+**/CLAUDE.md
+CLAUDE.local.md
+.mcp.json
