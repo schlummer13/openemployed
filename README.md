@@ -1,15 +1,83 @@
+<div align="center">
+
+<img src="docs/bilder/logo.svg" alt="OpenEmployed Logo" width="112" height="112">
+
 # OpenEmployed
 
-**Open Source + Self-Employed:** Rechnungen, Buchhaltung, Lohn, Steuern und Projekte für Selbstständige, UG und GmbH –
-selbst gehostet, GoBD-konform, ohne Abo. Gedacht als Ersatz für lexoffice, sevDesk & Co. inklusive Lohnbuchhaltung.
+### Deine ganze Firma. Auf deinem Server. Ohne Abo.
 
-Betrieb: [docs/betrieb.md](docs/betrieb.md) ·
-Lokal ausprobieren: [docs/lokal-testen.md](docs/lokal-testen.md) · GoBD-Verfahrensdokumentation: [docs/verfahrensdokumentation.md](docs/verfahrensdokumentation.md)
+Rechnungen, Buchhaltung, **Lohn**, Personal, Verträge und Steuern für Selbstständige, UG und GmbH –
+selbst gehostet, GoBD-konform und offen bis zur letzten Zeile.
+
+[![Lizenz: AGPL-3.0](https://img.shields.io/badge/Lizenz-AGPL--3.0-0d6662?style=for-the-badge)](LICENSE)
+[![Version](https://img.shields.io/badge/Version-0.9.0-2bbcac?style=for-the-badge)](VERSION)
+[![Tests](https://img.shields.io/badge/Tests-411%20gr%C3%BCn-16a34a?style=for-the-badge)](#entwicklung)
+[![Self-Hosted](https://img.shields.io/badge/Self--Hosted-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](#schnellstart)
+
+[**Schnellstart**](#schnellstart) · [Funktionen](#was-openemployed-kann) · [Lokal ausprobieren](docs/lokal-testen.md) ·
+[Betrieb](docs/betrieb.md) · [GoBD-Verfahrensdokumentation](docs/verfahrensdokumentation.md)
+
+</div>
+
+<br>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/bilder/dashboard-dark.png">
   <img alt="OpenEmployed – Übersicht mit frei verfügbarem Kapital, Einrichtung und Aufgaben (Demodaten)" src="docs/bilder/dashboard-light.png">
 </picture>
+
+<p align="center"><sub>Die Übersicht zeigt, was <b>wirklich</b> frei verfügbar ist – nach Umsatzsteuer, Ertragsteuer-Rücklage und offenen Rechnungen. (Demodaten)</sub></p>
+
+## Warum OpenEmployed?
+
+> Buchhaltungs-Abo, Lohnbüro, Signatur-Dienst, Zeiterfassung – und die Daten liegen überall verteilt.
+> OpenEmployed ist **ein** System, in dem jeder Euro genau einmal erfasst wird: vom Angebot über Rechnung und Zahlungseingang
+> bis zur Umsatzsteuer-Voranmeldung, zur Gehaltsabrechnung und zum DATEV-Export.
+
+<table>
+<tr>
+<td width="33%" valign="top">
+
+**🔒 Deine Daten bleiben bei dir**<br>
+Läuft komplett auf deinem Server. Sogar die KI-Belegerkennung arbeitet lokal (Ollama) – kein Beleg verlässt das Haus.
+
+</td>
+<td width="33%" valign="top">
+
+**🧾 Lohn, der rechnet wie das Finanzamt**<br>
+Lohnsteuer nach dem amtlichen Programmablaufplan 2026, gegen den BMF-Rechner geprüft – inklusive Midijob, Dienstwagen
+und Pfändung.
+
+</td>
+<td width="33%" valign="top">
+
+**⚡ Schnell und stabil**<br>
+Übersicht in ~4 ms, 500 parallele Anfragen ohne einen einzigen Fehler. Healthchecks und automatischer Neustart für jeden Dienst.
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+**📜 GoBD von Anfang an**<br>
+Unveränderbares Journal mit Hash-Kette, Audit-Protokoll, Aufbewahrungsfristen und Spiegelung auf S3 mit Object Lock.
+
+</td>
+<td valign="top">
+
+**✍️ Verträge rechtssicher unterschreiben**<br>
+Documenso ist automatisch verbunden. Das System prüft die Formvorschrift und schlägt den richtigen Weg vor – digital,
+qualifiziert oder auf Papier.
+
+</td>
+<td valign="top">
+
+**🇩🇪 Gemacht für Deutschland**<br>
+XRechnung 3.0, ZUGFeRD, Peppol, ELSTER, SEPA, DATEV, SKR03/04, Feiertage aller Bundesländer – komplett auf Deutsch.
+
+</td>
+</tr>
+</table>
 
 ## Was OpenEmployed kann
 
@@ -73,7 +141,7 @@ später unter *System & Integrationen* ändern – ohne `.env`-Bearbeitung (Gehe
 | `documenso` | digitale Signatur (selbst gehostet) |
 | `backup` | tägliche, geprüfte Datensicherung |
 
-Tests: `make test` · Typprüfung und Linter: `make lint`.
+<a id="entwicklung"></a>Tests: `make test` · Typprüfung und Linter: `make lint`.
 
 
 ## Mitmachen
