@@ -33,7 +33,7 @@ def test_role_policy() -> None:
 
 def client(token: str | None = None, **headers: str) -> httpx.AsyncClient:
     return httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://testserver", headers={"Origin": ORIGIN, **headers},
-                             cookies={"selbstlite_session": token} if token else None)
+                             cookies={"openemployed_session": token} if token else None)
 
 
 async def test_users_roles_password_totp_and_api_keys(env: Env) -> None:  # noqa: F811
@@ -52,7 +52,7 @@ async def test_users_roles_password_totp_and_api_keys(env: Env) -> None:  # noqa
     assert (await pub.post(f"/api/auth/invite/{token}", json={"password": "kurz"})).status_code == 422
     acc = await pub.post(f"/api/auth/invite/{token}", json={"password": "Sehr-sicheres-Passwort-2026"})
     assert acc.status_code == 200
-    stb = client(acc.cookies["selbstlite_session"])
+    stb = client(acc.cookies["openemployed_session"])
     me = (await stb.get("/api/auth/me")).json()
     assert me["role"] == "advisor" and me["has_password"]
     assert (await stb.get("/api/customers")).status_code == 200, "lesen erlaubt"
@@ -73,7 +73,7 @@ async def test_users_roles_password_totp_and_api_keys(env: Env) -> None:  # noqa
         assert step1["status"] == "totp_required"
         ok = await pub.post("/api/auth/password/login", json={"email": "stb@kanzlei.de", "password": "Sehr-sicheres-Passwort-2026",
                                                               "totp": totp(start["secret"])})
-        assert ok.status_code == 200 and ok.cookies.get("selbstlite_session")
+        assert ok.status_code == 200 and ok.cookies.get("openemployed_session")
         # Einstellungen werden vor dem Speichern geprüft
         bad = await api.put("/api/admin/settings", json={"changes": {"mail_provider": "microsoft", "mail_auth_mode": "service_account"}})
         assert bad.status_code == 409 and "service_account" in bad.text

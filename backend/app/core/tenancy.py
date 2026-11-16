@@ -5,8 +5,8 @@ from __future__ import annotations
 from contextvars import ContextVar
 from uuid import UUID
 
-COOKIE = "selbstlite_company"
-_current: ContextVar[UUID | None] = ContextVar("selbstlite_company", default=None)
+COOKIE = "openemployed_company"
+_current: ContextVar[UUID | None] = ContextVar("openemployed_company", default=None)
 
 
 def set_current(company_id: UUID | None) -> None:

@@ -28,7 +28,7 @@ from app.core.config import get_settings
 from app.services import audit, events
 from app.services.masterdata import ConflictError, NotFoundError
 
-log = logging.getLogger("selbstlite.webhooks")
+log = logging.getLogger("openemployed.webhooks")
 MAX_ATTEMPTS = 8
 
 

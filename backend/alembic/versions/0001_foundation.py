@@ -87,9 +87,9 @@ STATEMENTS: list[str] = [
         FOR EACH STATEMENT EXECUTE FUNCTION forbid_modification()
     """,
     # Backend darf Stammdaten-Versionen und Audit-Einträge nur anlegen und lesen
-    "REVOKE UPDATE, DELETE, TRUNCATE ON company_profiles, audit_log FROM selbstlite_app",
+    "REVOKE UPDATE, DELETE, TRUNCATE ON company_profiles, audit_log FROM openemployed_app",
     # Versionstabelle von Alembic geht das Backend nichts an
-    "REVOKE ALL ON alembic_version FROM selbstlite_app",
+    "REVOKE ALL ON alembic_version FROM openemployed_app",
     "REVOKE ALL ON FUNCTION forbid_modification() FROM PUBLIC",
 ]
 

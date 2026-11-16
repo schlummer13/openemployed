@@ -174,7 +174,7 @@ def test_base64_sanity() -> None:
 async def test_local_test_mode_sends_plain_to_catcher_and_has_no_inbox(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(mail_module.smtplib, "SMTP", _FakeSMTP)
     _FakeSMTP.calls.clear()
-    mailer = WorkspaceMailer(mailbox="buchhaltung@selbstlite.test", from_name="UG", auth_mode="local",
+    mailer = WorkspaceMailer(mailbox="buchhaltung@openemployed.test", from_name="UG", auth_mode="local",
                              smtp_host="mailpit", smtp_port=1025)
     await mailer.send(OutgoingMail(to=["kunde@firma.de"], subject="Test", text="x"))
     assert _FakeSMTP.calls[0] == "connect:mailpit:1025"
@@ -297,7 +297,7 @@ async def test_generic_imap_fetches_only_attachments_and_moves_to_folder(monkeyp
     assert not any(x == "uid:FETCH:b'8'" and "BODY.PEEK" in x for x in _FakeIMAP.log)
     _FakeIMAP.log.clear()
     await mailer.mark_processed("7")
-    assert 'create:"selbstlite-verarbeitet"' in _FakeIMAP.log and "uid:MOVE:7" in _FakeIMAP.log
+    assert 'create:"openemployed-verarbeitet"' in _FakeIMAP.log and "uid:MOVE:7" in _FakeIMAP.log
 
 
 def test_provider_presets_and_validation() -> None:

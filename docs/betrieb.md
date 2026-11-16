@@ -7,7 +7,7 @@ Empfehlung: Netcup Root-Server (z. B. RS 2000: 8 vCPU, 16 GB RAM, 512 GB SSD) mi
 ```bash
 apt update && apt install -y docker.io docker-compose-plugin git ufw
 ufw allow 22 && ufw allow 80 && ufw allow 443 && ufw enable
-git clone <repo> /opt/selbstlite && cd /opt/selbstlite
+git clone <repo> /opt/openemployed && cd /opt/openemployed
 scripts/generate-env.sh          # erzeugt .env mit Zufallspasswörtern
 ```
 
@@ -40,15 +40,15 @@ Die Container veröffentlichen ihre Ports nur auf `127.0.0.1`; nginx terminiert 
 | `sign.<domain>.de` | alles | `127.0.0.1:8312` (Documenso) |
 
 ```bash
-sudo cp infra/nginx/selbstlite.conf /etc/nginx/sites-available/
-sudo cp infra/nginx/selbstlite-headers.conf infra/nginx/selbstlite-proxy.conf /etc/nginx/snippets/
-sudo sed -i 's/example.de/<domain>.de/g' /etc/nginx/sites-available/selbstlite.conf
-sudo ln -s /etc/nginx/sites-available/selbstlite.conf /etc/nginx/sites-enabled/
+sudo cp infra/nginx/openemployed.conf /etc/nginx/sites-available/
+sudo cp infra/nginx/openemployed-headers.conf infra/nginx/openemployed-proxy.conf /etc/nginx/snippets/
+sudo sed -i 's/example.de/<domain>.de/g' /etc/nginx/sites-available/openemployed.conf
+sudo ln -s /etc/nginx/sites-available/openemployed.conf /etc/nginx/sites-enabled/
 sudo certbot certonly --nginx -d app.<domain>.de -d portal.<domain>.de -d sign.<domain>.de
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
-Wichtig: nginx muss `X-Forwarded-For` mit `$remote_addr` **überschreiben** (so in `selbstlite-proxy.conf`), sonst
+Wichtig: nginx muss `X-Forwarded-For` mit `$remote_addr` **überschreiben** (so in `openemployed-proxy.conf`), sonst
 könnten Clients die IP für Login-Sperren fälschen. Die Firewall (ufw) lässt nur 22, 80 und 443 zu.
 
 ```bash
@@ -59,7 +59,7 @@ docker compose ps                 # alle Dienste „healthy“
 ## 2. Updates
 
 ```bash
-cd /opt/selbstlite
+cd /opt/openemployed
 make update        # Sicherung → git pull → Neubau → Migrationen (scripts/update.sh, bricht bei Fehlern ab)
 ```
 
@@ -74,21 +74,21 @@ Jede Änderung in der Änderungshistorie der Verfahrensdokumentation vermerken.
 
 ```bash
 # Crontab des Servers: täglich 04:00 Uhr verschlüsselt kopieren
-0 4 * * * rsync -a --delete /opt/selbstlite/backups/ u123456@u123456.your-storagebox.de:selbstlite/
+0 4 * * * rsync -a --delete /opt/openemployed/backups/ u123456@u123456.your-storagebox.de:openemployed/
 ```
 
 **Wiederherstellungstest (halbjährlich, protokollieren):**
 
 ```bash
-scripts/restore.sh backups/daily/selbstlite_<datum>.dump selbstlite_restore_test
+scripts/restore.sh backups/daily/openemployed_<datum>.dump openemployed_restore_test
 ```
 
-Produktive Wiederherstellung (nur nach Rücksprache): Dienste stoppen, Datenbank `selbstlite` umbenennen, Sicherung als
-`selbstlite` einspielen, Dienste starten, Integritätsprüfung ausführen.
+Produktive Wiederherstellung (nur nach Rücksprache): Dienste stoppen, Datenbank `openemployed` umbenennen, Sicherung als
+`openemployed` einspielen, Dienste starten, Integritätsprüfung ausführen.
 
 ## 4a. E-Mail-Anbieter
 
-selbstlite versendet über SMTP und holt Belege per IMAP ab – mit jedem Anbieter. `MAIL_PROVIDER` wählt die Voreinstellung
+openemployed versendet über SMTP und holt Belege per IMAP ab – mit jedem Anbieter. `MAIL_PROVIDER` wählt die Voreinstellung
 (Server, Ports, Verschlüsselung), `SMTP_HOST`/`IMAP_HOST` überschreiben sie. Status und Testversand: Einstellungen → E-Mail
 bzw. `POST /api/mail/test` und `POST /api/mail/test-inbox` (prüft das Postfach, ohne etwas zu verändern).
 
@@ -102,13 +102,13 @@ bzw. `POST /api/mail/test` und `POST /api/mail/test-inbox` (prüft das Postfach,
 | Eigener Mailserver | `smtp` | `app_password` | `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURITY`, `IMAP_HOST` setzen |
 
 Weicht der Anmeldename von der Adresse ab, `MAIL_USERNAME` setzen. Belegeingang: Bei Google bekommen verarbeitete Mails das
-Label `selbstlite/verarbeitet`; bei allen anderen werden sie in den Ordner `MAIL_PROCESSED_FOLDER` verschoben (nie gelöscht).
+Label `openemployed/verarbeitet`; bei allen anderen werden sie in den Ordner `MAIL_PROCESSED_FOLDER` verschoben (nie gelöscht).
 Abgeholt werden Mails mit Anhang der letzten 60 Tage aus `MAIL_IMAP_FOLDER` – am besten Rechnungen per Postfachregel in einen
 eigenen Ordner sortieren oder eine eigene Adresse (z. B. belege@…) als `MAIL_IMAP_MAILBOX` nutzen.
 
 ### Microsoft 365 einrichten (einmalig, als Exchange-Administrator)
 
-1. **Entra ID → App-Registrierungen → Neue Registrierung** (Name z. B. „selbstlite“, nur dieses Verzeichnis).
+1. **Entra ID → App-Registrierungen → Neue Registrierung** (Name z. B. „openemployed“, nur dieses Verzeichnis).
    Verzeichnis-ID → `MS_TENANT_ID`, Anwendungs-ID → `MS_CLIENT_ID`.
 2. **Zertifikate & Geheimnisse → Neuer geheimer Clientschlüssel** → Wert als `MS_CLIENT_SECRET` (Ablaufdatum notieren!).
 3. **API-Berechtigungen → Berechtigung hinzufügen → Von meiner Organisation verwendete APIs → „Office 365 Exchange Online“ →
@@ -155,7 +155,7 @@ geladen. Download-Fortschritt: `docker compose logs -f ollama`. E-Rechnungen (XR
 
 ## 5. ELSTER (Umsatzsteuer-Voranmeldung direkt übermitteln)
 
-selbstlite erzeugt den ELSTER-Datensatz aus den festgeschriebenen Kennzahlen. Übermittelt wird ausschließlich über
+openemployed erzeugt den ELSTER-Datensatz aus den festgeschriebenen Kennzahlen. Übermittelt wird ausschließlich über
 **ERiC**, die offizielle Bibliothek der Finanzverwaltung (Plausibilitätsprüfung, Verschlüsselung, Versand):
 
 1. Kostenlos im ELSTER-Entwicklerbereich registrieren → **Hersteller-ID** (`ELSTER_HERSTELLER_ID` in der `.env`).

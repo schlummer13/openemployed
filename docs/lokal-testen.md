@@ -54,7 +54,7 @@ Daten** unwiderruflich, auch Documenso-Testdaten) selbst ausführen:
 
 ```bash
 docker compose --profile lokal down
-docker volume rm selbstlite_postgres-data
+docker volume rm openemployed_postgres-data
 make up && sleep 30 && make demo
 ```
 

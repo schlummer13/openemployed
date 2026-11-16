@@ -44,3 +44,6 @@ CLAUDE.md
 **/CLAUDE.md
 CLAUDE.local.md
 .mcp.json
+
+# Einmalige lokale Umstellung (nicht veröffentlichen)
+umstellung-auf-openemployed.sh

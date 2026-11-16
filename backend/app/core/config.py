@@ -54,7 +54,7 @@ class Settings(BaseSettings):
     # ELSTER (Umsatzsteuer-Voranmeldung): ERiC der Finanzverwaltung + Hersteller-ID + Organisationszertifikat
     eric_home: str = ""
     elster_hersteller_id: str = ""
-    elster_cert_path: str = "/run/secrets/selbstlite/elster.pfx"
+    elster_cert_path: str = "/run/secrets/openemployed/elster.pfx"
     elster_test_mode: bool = True
 
     # ── E-Mail (Google Workspace, Microsoft 365 oder jeder IMAP/SMTP-Anbieter, Voreinstellungen in app/services/mail.py) ──
@@ -66,10 +66,10 @@ class Settings(BaseSettings):
     mail_from_name: str = ""
     mail_username: str = ""              # leer = MAIL_MAILBOX (manche Anbieter melden mit abweichendem Benutzernamen an)
     mail_app_password: SecretStr = SecretStr("")
-    mail_service_account_file: str = "/run/secrets/selbstlite/google-mail-service-account.json"
+    mail_service_account_file: str = "/run/secrets/openemployed/google-mail-service-account.json"
     mail_imap_mailbox: str = ""
     mail_imap_folder: str = "INBOX"
-    mail_processed_folder: str = "selbstlite-verarbeitet"
+    mail_processed_folder: str = "openemployed-verarbeitet"
     ms_tenant_id: str = ""
     ms_client_id: str = ""
     ms_client_secret: SecretStr = SecretStr("")
@@ -180,7 +180,7 @@ class Settings(BaseSettings):
     @property
     def session_cookie_name(self) -> str:
         # __Host- verlangt Secure; lokal über http://localhost daher ohne Präfix
-        return "__Host-selbstlite_session" if self.is_production else "selbstlite_session"
+        return "__Host-openemployed_session" if self.is_production else "openemployed_session"
 
     @property
     def portal_base(self) -> str:
@@ -188,7 +188,7 @@ class Settings(BaseSettings):
 
     @property
     def portal_cookie_name(self) -> str:
-        return "__Host-portal_session" if self.portal_base.startswith("https://") else "selbstlite_portal"
+        return "__Host-portal_session" if self.portal_base.startswith("https://") else "openemployed_portal"
 
     @property
     def portal_dev_codes(self) -> bool:
@@ -197,7 +197,7 @@ class Settings(BaseSettings):
 
     @property
     def oauth_cookie_name(self) -> str:
-        return "__Host-selbstlite_oauth" if self.is_production else "selbstlite_oauth"
+        return "__Host-openemployed_oauth" if self.is_production else "openemployed_oauth"
 
     @property
     def cookie_secure(self) -> bool:

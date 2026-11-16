@@ -18,7 +18,7 @@ from app.services import attendance as svc
 from app.services.mail import OutgoingMail
 
 router = APIRouter(tags=["zeiten-urlaub"])
-log = logging.getLogger("selbstlite.attendance")
+log = logging.getLogger("openemployed.attendance")
 Kind = Literal["vacation", "sick", "special", "unpaid", "overtime", "school", "parental", "maternity"]
 
 

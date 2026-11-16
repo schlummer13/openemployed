@@ -117,7 +117,7 @@ STATEMENTS: list[str] = [
     # Kreditorennummern (DATEV-Personenkonten) werden beim ersten Export vergeben und nie geändert
     "ALTER TABLE suppliers ADD COLUMN datev_account INT CHECK (datev_account IS NULL OR datev_account BETWEEN 70000 AND 99999)",
     "CREATE UNIQUE INDEX suppliers_datev_account_idx ON suppliers (tenant_id, datev_account) WHERE datev_account IS NOT NULL",
-    "REVOKE TRUNCATE ON datev_exports, datev_export_items, bank_transactions FROM selbstlite_app",
+    "REVOKE TRUNCATE ON datev_exports, datev_export_items, bank_transactions FROM openemployed_app",
 ]
 
 

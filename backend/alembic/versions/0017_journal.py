@@ -129,8 +129,8 @@ STATEMENTS: list[str] = [
     "FOR EACH ROW EXECUTE FUNCTION check_journal_balance()",
     "CREATE TRIGGER journal_entries_immutable BEFORE UPDATE OR DELETE ON journal_entries FOR EACH ROW EXECUTE FUNCTION forbid_modification()",
     "CREATE TRIGGER journal_lines_immutable BEFORE UPDATE OR DELETE ON journal_lines FOR EACH ROW EXECUTE FUNCTION forbid_modification()",
-    "REVOKE TRUNCATE ON journal_entries, journal_lines FROM selbstlite_app",
-    "GRANT SELECT ON accounts TO selbstlite_app",
+    "REVOKE TRUNCATE ON journal_entries, journal_lines FROM openemployed_app",
+    "GRANT SELECT ON accounts TO openemployed_app",
 ]
 
 

@@ -55,7 +55,7 @@ STATEMENTS: list[str] = [
     $$
     """,
     "CREATE TRIGGER signature_requests_guard BEFORE UPDATE OR DELETE ON signature_requests FOR EACH ROW EXECUTE FUNCTION guard_signature()",
-    "REVOKE TRUNCATE ON signature_requests FROM selbstlite_app",
+    "REVOKE TRUNCATE ON signature_requests FROM openemployed_app",
 ]
 
 

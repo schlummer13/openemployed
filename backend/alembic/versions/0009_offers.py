@@ -98,7 +98,7 @@ STATEMENTS: list[str] = [
     $$
     """,
     "CREATE TRIGGER offer_lines_guard BEFORE INSERT OR UPDATE OR DELETE ON offer_lines FOR EACH ROW EXECUTE FUNCTION guard_sent_offer_lines()",
-    "REVOKE TRUNCATE ON offers, offer_lines FROM selbstlite_app",
+    "REVOKE TRUNCATE ON offers, offer_lines FROM openemployed_app",
 ]
 
 

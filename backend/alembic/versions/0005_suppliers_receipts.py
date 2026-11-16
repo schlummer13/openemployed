@@ -118,9 +118,9 @@ STATEMENTS: list[str] = [
     CREATE TRIGGER receipts_guard BEFORE UPDATE OR DELETE ON receipts
         FOR EACH ROW EXECUTE FUNCTION guard_booked_receipt()
     """,
-    "REVOKE TRUNCATE ON suppliers, receipts, receipt_files FROM selbstlite_app",
-    "REVOKE DELETE ON suppliers FROM selbstlite_app",
-    "REVOKE UPDATE, DELETE ON receipt_files FROM selbstlite_app",
+    "REVOKE TRUNCATE ON suppliers, receipts, receipt_files FROM openemployed_app",
+    "REVOKE DELETE ON suppliers FROM openemployed_app",
+    "REVOKE UPDATE, DELETE ON receipt_files FROM openemployed_app",
     "REVOKE ALL ON FUNCTION guard_booked_receipt() FROM PUBLIC",
 ]
 

@@ -2,7 +2,7 @@
 name = "ledger"
 version = "0.1.0"
 edition = "2021"
-description = "selbstlite – Festschreibung, Nummernvergabe und Hash-Kette (GoBD)"
+description = "openemployed – Festschreibung, Nummernvergabe und Hash-Kette (GoBD)"
 publish = false
 
 [dependencies]

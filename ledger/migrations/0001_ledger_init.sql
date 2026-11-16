@@ -1,5 +1,5 @@
--- selbstlite Ledger: festgeschriebene, unveränderliche Datensätze (GoBD)
--- Ausgeführt vom Rust-Dienst mit der Rolle selbstlite_migrator (search_path = ledger).
+-- openemployed Ledger: festgeschriebene, unveränderliche Datensätze (GoBD)
+-- Ausgeführt vom Rust-Dienst mit der Rolle openemployed_migrator (search_path = ledger).
 
 CREATE SCHEMA IF NOT EXISTS ledger;
 
@@ -102,8 +102,8 @@ CREATE TRIGGER locked_periods_no_truncate BEFORE TRUNCATE ON ledger.locked_perio
 REVOKE ALL ON ALL TABLES IN SCHEMA ledger FROM PUBLIC;
 REVOKE ALL ON FUNCTION ledger.forbid_modification(), ledger.guard_number_counter() FROM PUBLIC;
 
-GRANT SELECT, INSERT ON ledger.chain_records, ledger.number_ranges, ledger.locked_periods TO selbstlite_ledger;
-GRANT SELECT, INSERT, UPDATE ON ledger.number_counters TO selbstlite_ledger;
+GRANT SELECT, INSERT ON ledger.chain_records, ledger.number_ranges, ledger.locked_periods TO openemployed_ledger;
+GRANT SELECT, INSERT, UPDATE ON ledger.number_counters TO openemployed_ledger;
 
 -- Backend darf festgeschriebene Daten nur lesen
-GRANT SELECT ON ledger.chain_records, ledger.locked_periods, ledger.number_ranges TO selbstlite_app;
+GRANT SELECT ON ledger.chain_records, ledger.locked_periods, ledger.number_ranges TO openemployed_app;

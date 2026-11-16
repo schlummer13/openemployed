@@ -24,7 +24,7 @@ from sqlalchemy.ext.asyncio import AsyncConnection
 from app.services import audit
 from app.services.masterdata import NotFoundError
 
-log = logging.getLogger("selbstlite.documenso")
+log = logging.getLogger("openemployed.documenso")
 
 
 class SignatureError(RuntimeError):
@@ -267,7 +267,7 @@ async def create_request(conn: AsyncConnection, client: DocumensoClient, tenant_
         {"t": tenant_id, "st": subject_type, "sid": subject_id, "title": subject["title"], "n": signer_name, "e": signer_email.lower(),
          "ce": countersigner_email, "pdf": pdf, "sha": sha, "a": actor})
     doc_id = await client.create_document(
-        title=subject["title"], external_id=f"selbstlite:{request_id}", pdf=pdf,
+        title=subject["title"], external_id=f"openemployed:{request_id}", pdf=pdf,
         recipients=build_recipients(signer_name=signer_name, signer_email=signer_email.lower(), countersigner=countersigner_email,
                                     company=company, pages=pages))
     await conn.execute(text("UPDATE signature_requests SET documenso_id = :d, last_event = 'CREATED' WHERE id = :id"),

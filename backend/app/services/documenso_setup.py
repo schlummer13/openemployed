@@ -33,7 +33,7 @@ from app.core.config import get_settings
 from app.services import audit
 from app.services.masterdata import ConflictError
 
-log = logging.getLogger("selbstlite.documenso")
+log = logging.getLogger("openemployed.documenso")
 TOKEN_KEY = "documenso_api_token"  # noqa: S105 – Schlüsselname, kein Geheimnis
 EVENTS = ("DOCUMENT_CREATED", "DOCUMENT_SENT", "DOCUMENT_OPENED", "DOCUMENT_SIGNED", "DOCUMENT_RECIPIENT_COMPLETED", "DOCUMENT_COMPLETED",
           "DOCUMENT_REJECTED", "DOCUMENT_CANCELLED", "TEMPLATE_CREATED", "TEMPLATE_UPDATED", "TEMPLATE_DELETED", "TEMPLATE_USED")
@@ -287,7 +287,7 @@ async def sync(conn: AsyncConnection, client: Any, ledger: Any, tenant_id: UUID,
         data = await client.list_documents(page=page, per_page=50)
         for doc in data.get("data", []):
             ext = str(doc.get("externalId") or "")
-            if ext.startswith("selbstlite:"):
+            if ext.startswith("openemployed:"):
                 status = str(doc.get("status"))
                 event = {"COMPLETED": "DOCUMENT_COMPLETED", "REJECTED": "DOCUMENT_REJECTED"}.get(status)
                 if event:

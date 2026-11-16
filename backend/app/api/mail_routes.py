@@ -8,7 +8,7 @@ from fastapi import APIRouter, HTTPException, Request
 from app.auth.deps import CurrentUser
 from app.services.mail import PROVIDERS, MailError, MailNotConfiguredError, OutgoingMail, WorkspaceMailer
 
-log = logging.getLogger("selbstlite.mail")
+log = logging.getLogger("openemployed.mail")
 router = APIRouter(prefix="/api/mail", tags=["e-mail"])
 
 

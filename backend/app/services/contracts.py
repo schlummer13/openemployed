@@ -26,7 +26,7 @@ from app.services import invoices as inv
 from app.services.ledger_client import LedgerClient
 from app.services.masterdata import NotFoundError, get_customer
 
-log = logging.getLogger("selbstlite.billing")
+log = logging.getLogger("openemployed.billing")
 BILLING_LOCK_KEY = 0x53_4C_42_49_4C_4C  # "SLBILL"
 PERIOD_WORD = {"monthly": "Monat", "quarterly": "Quartal", "yearly": "Jahr"}
 

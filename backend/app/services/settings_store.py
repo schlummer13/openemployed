@@ -23,7 +23,7 @@ from app.core.config import Settings, get_settings
 from app.services import audit
 from app.services.masterdata import ConflictError
 
-log = logging.getLogger("selbstlite.settings")
+log = logging.getLogger("openemployed.settings")
 
 
 @dataclass(frozen=True, slots=True)
@@ -97,7 +97,7 @@ _ENV_DEFAULTS: dict[str, Any] = {}
 def _fernet() -> Any:
     from cryptography.fernet import Fernet
 
-    key = hashlib.sha256(b"selbstlite-settings:" + get_settings().session_secret.get_secret_value().encode()).digest()
+    key = hashlib.sha256(b"openemployed-settings:" + get_settings().session_secret.get_secret_value().encode()).digest()
     return Fernet(base64.urlsafe_b64encode(key))
 
 

@@ -205,5 +205,5 @@ async def download_backup(name: str, user: CurrentUser) -> FileResponse:
         raise HTTPException(status_code=404, detail="Sicherung nicht gefunden") from exc
     import logging
 
-    logging.getLogger("selbstlite.system").warning("Sicherung %s heruntergeladen von %s", name, user.email)
+    logging.getLogger("openemployed.system").warning("Sicherung %s heruntergeladen von %s", name, user.email)
     return FileResponse(path, media_type="application/octet-stream", filename=name)

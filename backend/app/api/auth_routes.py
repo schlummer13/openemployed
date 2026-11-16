@@ -23,7 +23,7 @@ from app.auth.google import (
 from app.auth.store import AuthStore
 from app.core.config import get_settings
 
-log = logging.getLogger("selbstlite.auth")
+log = logging.getLogger("openemployed.auth")
 router = APIRouter(prefix="/api/auth", tags=["anmeldung"])
 
 OAUTH_COOKIE_MAX_AGE = 600

@@ -1,8 +1,8 @@
-# selbstlite – kompletter Stack (Entwicklung und Produktion)
+# openemployed – kompletter Stack (Entwicklung und Produktion)
 # Start:  make secrets && make up
 # Alle Zugangsdaten kommen aus .env (siehe .env.example), nie aus dieser Datei.
 
-name: selbstlite
+name: openemployed
 
 x-restart: &restart
   restart: unless-stopped
@@ -22,9 +22,9 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_SUPERUSER_PASSWORD:?}
       POSTGRES_DB: postgres
       # werden vom Init-Skript gelesen
-      SELBSTLITE_MIGRATOR_PASSWORD: ${SELBSTLITE_MIGRATOR_PASSWORD:?}
-      SELBSTLITE_APP_PASSWORD: ${SELBSTLITE_APP_PASSWORD:?}
-      SELBSTLITE_LEDGER_PASSWORD: ${SELBSTLITE_LEDGER_PASSWORD:?}
+      OPENEMPLOYED_MIGRATOR_PASSWORD: ${OPENEMPLOYED_MIGRATOR_PASSWORD:?}
+      OPENEMPLOYED_APP_PASSWORD: ${OPENEMPLOYED_APP_PASSWORD:?}
+      OPENEMPLOYED_LEDGER_PASSWORD: ${OPENEMPLOYED_LEDGER_PASSWORD:?}
       DOCUMENSO_DB_PASSWORD: ${DOCUMENSO_DB_PASSWORD:?}
     volumes:
       - postgres-data:/var/lib/postgresql/data
@@ -42,8 +42,8 @@ services:
     build: ./ledger
     environment:
       LEDGER_BIND: 0.0.0.0:8080
-      LEDGER_DATABASE_URL: postgres://selbstlite_ledger:${SELBSTLITE_LEDGER_PASSWORD}@postgres:5432/selbstlite
-      LEDGER_MIGRATOR_DATABASE_URL: postgres://selbstlite_migrator:${SELBSTLITE_MIGRATOR_PASSWORD}@postgres:5432/selbstlite
+      LEDGER_DATABASE_URL: postgres://openemployed_ledger:${OPENEMPLOYED_LEDGER_PASSWORD}@postgres:5432/openemployed
+      LEDGER_MIGRATOR_DATABASE_URL: postgres://openemployed_migrator:${OPENEMPLOYED_MIGRATOR_PASSWORD}@postgres:5432/openemployed
       LEDGER_INTERNAL_TOKEN: ${LEDGER_INTERNAL_TOKEN:?}
       RUST_LOG: ${LEDGER_LOG:-info}
     depends_on:
@@ -64,8 +64,8 @@ services:
       target: runtime
     environment:
       APP_ENV: ${APP_ENV:-development}
-      DATABASE_URL: postgresql+asyncpg://selbstlite_app:${SELBSTLITE_APP_PASSWORD}@postgres:5432/selbstlite
-      MIGRATOR_DATABASE_URL: postgresql+asyncpg://selbstlite_migrator:${SELBSTLITE_MIGRATOR_PASSWORD}@postgres:5432/selbstlite
+      DATABASE_URL: postgresql+asyncpg://openemployed_app:${OPENEMPLOYED_APP_PASSWORD}@postgres:5432/openemployed
+      MIGRATOR_DATABASE_URL: postgresql+asyncpg://openemployed_migrator:${OPENEMPLOYED_MIGRATOR_PASSWORD}@postgres:5432/openemployed
       LEDGER_URL: http://ledger:8080
       # Anzahl Server-Prozesse (Hintergrundjobs sind per Datenbank-Sperre gegen Doppelausführung geschützt)
       WEB_CONCURRENCY: ${WEB_CONCURRENCY:-2}
@@ -89,10 +89,10 @@ services:
       MAIL_FROM_NAME: ${MAIL_FROM_NAME:-}
       MAIL_USERNAME: ${MAIL_USERNAME:-}
       MAIL_APP_PASSWORD: ${MAIL_APP_PASSWORD:-}
-      MAIL_SERVICE_ACCOUNT_FILE: /run/secrets/selbstlite/google-mail-service-account.json
+      MAIL_SERVICE_ACCOUNT_FILE: /run/secrets/openemployed/google-mail-service-account.json
       MAIL_IMAP_MAILBOX: ${MAIL_IMAP_MAILBOX:-}
       MAIL_IMAP_FOLDER: ${MAIL_IMAP_FOLDER:-INBOX}
-      MAIL_PROCESSED_FOLDER: ${MAIL_PROCESSED_FOLDER:-selbstlite-verarbeitet}
+      MAIL_PROCESSED_FOLDER: ${MAIL_PROCESSED_FOLDER:-openemployed-verarbeitet}
       MS_TENANT_ID: ${MS_TENANT_ID:-}
       MS_CLIENT_ID: ${MS_CLIENT_ID:-}
       MS_CLIENT_SECRET: ${MS_CLIENT_SECRET:-}
@@ -116,9 +116,9 @@ services:
       FINTS_PRODUCT_ID: ${FINTS_PRODUCT_ID:-}
       # ELSTER (UStVA-Übertragung): ERiC nach secrets/eric legen, Hersteller-ID und Zertifikat (secrets/elster.pfx) hinterlegen
       COMPANY_STATE: ${COMPANY_STATE:-NW}
-      ERIC_HOME: ${ERIC_HOME:-/run/secrets/selbstlite/eric}
+      ERIC_HOME: ${ERIC_HOME:-/run/secrets/openemployed/eric}
       ELSTER_HERSTELLER_ID: ${ELSTER_HERSTELLER_ID:-}
-      ELSTER_CERT_PATH: /run/secrets/selbstlite/elster.pfx
+      ELSTER_CERT_PATH: /run/secrets/openemployed/elster.pfx
       ELSTER_TEST_MODE: ${ELSTER_TEST_MODE:-true}
       TRADE_TAX_MULTIPLIER: ${TRADE_TAX_MULTIPLIER:-440}
       # KI: "auto" = lokale KI (Ollama-Dienst unten), "anthropic" = Claude-API, "none" = aus
@@ -126,7 +126,7 @@ services:
       OLLAMA_URL: ${OLLAMA_URL:-http://ollama:11434}
       OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5vl:7b}
     volumes:
-      - ./secrets:/run/secrets/selbstlite:ro
+      - ./secrets:/run/secrets/openemployed:ro
       # Sicherungen anzeigen/anstoßen (Einstellungen → System); geschrieben wird nur die Anforderungsdatei
       - ${BACKUP_PATH:-./backups}:/backups
       # Archiv-Spiegelung auf Festplatte/NAS: Pfad auf dem Server (z. B. eingehängte USB-Platte /mnt/archiv)
@@ -217,7 +217,7 @@ services:
         condition: service_healthy
 
   # ─────────────────────── Reverse Proxy (nur lokale Entwicklung) ───────────────────────
-  # Produktion: nginx auf dem Host (infra/nginx/selbstlite.conf) – Caddy wird dort nicht gestartet.
+  # Produktion: nginx auf dem Host (infra/nginx/openemployed.conf) – Caddy wird dort nicht gestartet.
   # Lokal mit Subdomains (localhost, portal.localhost, sign.localhost): docker compose --profile lokal up -d
   caddy:
     <<: *restart

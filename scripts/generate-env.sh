@@ -16,9 +16,9 @@ uuid() { python3 -c 'import uuid; print(uuid.uuid4())'; }
 
 sed \
   -e "s|__POSTGRES_SUPERUSER_PASSWORD__|$(rand)|" \
-  -e "s|__SELBSTLITE_MIGRATOR_PASSWORD__|$(rand)|" \
-  -e "s|__SELBSTLITE_APP_PASSWORD__|$(rand)|" \
-  -e "s|__SELBSTLITE_LEDGER_PASSWORD__|$(rand)|" \
+  -e "s|__OPENEMPLOYED_MIGRATOR_PASSWORD__|$(rand)|" \
+  -e "s|__OPENEMPLOYED_APP_PASSWORD__|$(rand)|" \
+  -e "s|__OPENEMPLOYED_LEDGER_PASSWORD__|$(rand)|" \
   -e "s|__DOCUMENSO_DB_PASSWORD__|$(rand)|" \
   -e "s|__LEDGER_INTERNAL_TOKEN__|$(rand)|" \
   -e "s|__TENANT_ID__|$(uuid)|" \

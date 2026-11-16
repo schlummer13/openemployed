@@ -24,7 +24,7 @@ from sqlalchemy.ext.asyncio import AsyncConnection
 from app.domain.expenses import BEWIRTUNG_DEDUCTIBLE, CATEGORIES
 from app.services import audit
 
-log = logging.getLogger("selbstlite.accounting")
+log = logging.getLogger("openemployed.accounting")
 D = Decimal
 CENT = D("0.01")
 ZERO = D("0")

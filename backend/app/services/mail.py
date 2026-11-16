@@ -72,7 +72,7 @@ PROVIDERS: dict[str, Provider] = {
     "zoho": Provider("Zoho Mail (EU)", "smtppro.zoho.eu", 465, "imappro.zoho.eu"),
     "smtp": Provider("Eigener Mailserver / anderer Anbieter", "", 587, ""),
 }
-PROCESSED_LABEL = "selbstlite/verarbeitet"
+PROCESSED_LABEL = "openemployed/verarbeitet"
 MAX_ATTACHMENT_BYTES = 20 * 1024 * 1024  # Gmail-Grenze ca. 25 MB inkl. Kodierung
 
 
@@ -284,7 +284,7 @@ class WorkspaceMailer:
         username: str = "",
         smtp_security: Security | None = None,
         imap_folder: str = "INBOX",
-        processed_folder: str = "selbstlite-verarbeitet",
+        processed_folder: str = "openemployed-verarbeitet",
     ) -> None:
         if not mailbox:
             raise MailNotConfiguredError("MAIL_MAILBOX ist nicht gesetzt")
@@ -446,7 +446,7 @@ class WorkspaceMailer:
         conn = self._imap_login()
         try:
             if not self.uses_gmail_labels:
-                # Standard-IMAP: in den Ordner „selbstlite-verarbeitet“ verschieben (wird nicht gelöscht)
+                # Standard-IMAP: in den Ordner „openemployed-verarbeitet“ verschieben (wird nicht gelöscht)
                 conn.select(f'"{self._imap_folder}"')
                 folder = f'"{self._processed_folder}"'
                 with contextlib.suppress(imaplib.IMAP4.error):
@@ -474,7 +474,7 @@ class WorkspaceMailer:
                 conn.logout()
 
     async def mark_processed(self, uid: str) -> None:
-        """Gmail: Label „selbstlite/verarbeitet“; sonst Verschieben in den Ordner „selbstlite-verarbeitet“ (nie löschen)."""
+        """Gmail: Label „openemployed/verarbeitet“; sonst Verschieben in den Ordner „openemployed-verarbeitet“ (nie löschen)."""
         if self.is_local:
             return
         try:

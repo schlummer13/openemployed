@@ -1,7 +1,7 @@
 [project]
-name = "selbstlite-backend"
+name = "openemployed-backend"
 version = "0.1.0"
-description = "selbstlite – Backend (FastAPI)"
+description = "openemployed – Backend (FastAPI)"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi==0.162.7",

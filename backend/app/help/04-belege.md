@@ -3,7 +3,7 @@
 
 ## Wie Belege hereinkommen
 - **Belegpostfach:** Rechnungen an euer Belegpostfach (IMAP) werden alle 15 Minuten abgeholt. E-Rechnungen (ZUGFeRD/XRechnung)
-  werden sofort exakt gelesen, andere PDFs und Fotos von der KI. Verarbeitete Mails wandern in den Ordner „selbstlite-verarbeitet“.
+  werden sofort exakt gelesen, andere PDFs und Fotos von der KI. Verarbeitete Mails wandern in den Ordner „openemployed-verarbeitet“.
 - **Handy:** Unter **Beleg erfassen** (Kamerasymbol) fotografiert ihr Kassenbons und Rechnungen; das Bild wird verkleinert hochgeladen.
 - **Upload:** Unter **Belege** per Datei auswählen.
 

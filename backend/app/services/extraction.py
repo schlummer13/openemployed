@@ -22,7 +22,7 @@ from sqlalchemy.ext.asyncio import AsyncConnection
 
 from app.domain.expenses import CATEGORIES
 
-log = logging.getLogger("selbstlite.extraction")
+log = logging.getLogger("openemployed.extraction")
 D = Decimal
 CENT = D("0.01")
 EU = frozenset({"AT", "BE", "BG", "CY", "CZ", "DK", "EE", "ES", "FI", "FR", "GR", "HR", "HU", "IE", "IT", "LT", "LU", "LV",

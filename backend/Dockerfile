@@ -18,9 +18,9 @@ COPY alembic.ini ./
 COPY alembic ./alembic
 COPY entrypoint.sh ./
 RUN chmod 755 entrypoint.sh \
-    && useradd --system --uid 10001 --no-create-home selbstlite
+    && useradd --system --uid 10001 --no-create-home openemployed
 
-# ── Test-Stufe: docker build --target test -t selbstlite-backend-test backend ──
+# ── Test-Stufe: docker build --target test -t openemployed-backend-test backend ──
 FROM base AS test
 RUN pip install ".[dev]"
 COPY tests ./tests

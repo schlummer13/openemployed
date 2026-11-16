@@ -132,7 +132,7 @@ STATEMENTS: list[str] = [
         created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
     )
     """,
-    "REVOKE TRUNCATE ON payments, dunning_notices FROM selbstlite_app",
+    "REVOKE TRUNCATE ON payments, dunning_notices FROM openemployed_app",
 ]
 
 

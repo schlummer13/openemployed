@@ -1,6 +1,6 @@
 #!/bin/sh
 # Tägliche Datensicherung (GoBD: Aufbewahrung 8/10 Jahre; Datensicherung ist Teil der Verfahrensdokumentation).
-# - pg_dump im Custom-Format für selbstlite (inkl. Ledger-Schema) und Documenso
+# - pg_dump im Custom-Format für openemployed (inkl. Ledger-Schema) und Documenso
 # - Prüfung jeder Sicherung mit pg_restore --list, SHA-256-Prüfsumme
 # - Aufbewahrung: 30 tägliche, 12 monatliche (1. des Monats), 10 jährliche (1. Januar)
 # - Eine Kopie außer Haus (z. B. Netcup Storage Box per rsync) richtet ihr zusätzlich ein (docs/betrieb.md).
@@ -13,7 +13,7 @@ run_backup() {
   ts=$(date +%Y-%m-%d_%H%M)
   day=$(date +%d); month=$(date +%m)
   mkdir -p "$BACKUP_DIR/daily" "$BACKUP_DIR/monthly" "$BACKUP_DIR/yearly"
-  for db in selbstlite documenso; do
+  for db in openemployed documenso; do
     file="$BACKUP_DIR/daily/${db}_${ts}.dump"
     pg_dump -h postgres -U "$POSTGRES_USER" -d "$db" -Fc -Z 6 -f "$file.part"
     pg_restore --list "$file.part" > /dev/null   # Sicherung lesbar?

@@ -90,8 +90,8 @@ STATEMENTS: list[str] = [
     )
     """,
     "CREATE INDEX tasks_board_idx ON tasks (project_id, column_id, position)",
-    "REVOKE TRUNCATE ON shareholders, md_compensations, projects, project_columns, tasks FROM selbstlite_app",
-    "REVOKE UPDATE, DELETE ON md_compensations FROM selbstlite_app",
+    "REVOKE TRUNCATE ON shareholders, md_compensations, projects, project_columns, tasks FROM openemployed_app",
+    "REVOKE UPDATE, DELETE ON md_compensations FROM openemployed_app",
 ]
 
 

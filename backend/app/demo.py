@@ -58,7 +58,7 @@ class Demo:
     def __init__(self) -> None:
         s = get_settings()
         self.api = httpx.Client(base_url=BASE, headers={"Origin": s.app_origin}, timeout=60)
-        r = self.api.post("/api/auth/dev-login", json={"email": "anna@selbstlite.test"})
+        r = self.api.post("/api/auth/dev-login", json={"email": "anna@openemployed.test"})
         r.raise_for_status()
         self.log: list[str] = []
 
@@ -82,7 +82,7 @@ class Demo:
             "legal_form": "UG (haftungsbeschränkt)", "street": "Königsallee 1", "postal_code": "40212", "city": "Düsseldorf",
             "register_court": "Amtsgericht Düsseldorf", "register_number": "HRB 12345",
             "managing_directors": ["Anna Adler", "Ben Becker", "Cem Çelik", "Dana Dorn"],
-            "tax_number": "103/5734/0815", "iban": "DE89 3704 0044 0532 0130 00", "email": "hallo@selbstlite.test"})
+            "tax_number": "103/5734/0815", "iban": "DE89 3704 0044 0532 0130 00", "email": "hallo@openemployed.test"})
         self.note("Firmenprofil")
 
     def shareholders(self) -> dict[str, str]:
@@ -96,7 +96,7 @@ class Demo:
         ids: dict[str, str] = {}
         for i, (short, name, role, color, born, tax_class, church, kids, insurer) in enumerate(people):
             existing = next((s for s in team if s["name"].split()[0] == short), None)
-            body = {"name": name, "email": f"{short.lower()}@selbstlite.test", "share_percent": "25.00",
+            body = {"name": name, "email": f"{short.lower()}@openemployed.test", "share_percent": "25.00",
                     "is_managing_director": True, "phone": f"+49 211 5550{i + 1}0", "birth_date": born,
                     "street": f"Rheinallee {10 + i}", "postal_code": "40476", "city": "Düsseldorf",
                     "role_title": role, "joined_on": f"{YEAR - 1}-03-01", "color": color}

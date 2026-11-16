@@ -52,7 +52,7 @@ async def env() -> AsyncIterator[Env]:
                                        ip=None, user_agent=None)
     async with httpx.AsyncClient(
         transport=httpx.ASGITransport(app=app), base_url="http://testserver",
-        headers={"Origin": ORIGIN}, cookies={"selbstlite_session": token},
+        headers={"Origin": ORIGIN}, cookies={"openemployed_session": token},
     ) as api:
         yield Env(api, ledger, engine)
     reset_app_state()

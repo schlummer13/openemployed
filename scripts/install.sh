@@ -1,5 +1,5 @@
 #!/bin/sh
-# selbstlite mit einem Befehl installieren (Ubuntu/Debian-Server mit Docker; lokal genauso):
+# openemployed mit einem Befehl installieren (Ubuntu/Debian-Server mit Docker; lokal genauso):
 #   ./scripts/install.sh            Produktion hinter eigenem Reverse-Proxy (nginx), Ports nur auf 127.0.0.1
 #   ./scripts/install.sh --lokal    Ausprobieren auf dem eigenen Rechner (Caddy, Mailpit, Entwickler-Anmeldung)
 # Danach im Browser öffnen und den Einrichtungsassistenten durchlaufen (Firma, Steuern, E-Mail, Benutzer).
@@ -19,7 +19,7 @@ if [ ! -f .env ]; then
   ./scripts/generate-env.sh
   if [ "$MODE" = "--lokal" ]; then
     sed -i.bak -e 's/^APP_ENV=.*/APP_ENV=development/' -e 's/^DEV_LOGIN_ENABLED=.*/DEV_LOGIN_ENABLED=true/' \
-      -e 's/^MAIL_AUTH_MODE=.*/MAIL_AUTH_MODE=local/' -e 's/^MAIL_MAILBOX=.*/MAIL_MAILBOX=buchhaltung@selbstlite.test/' \
+      -e 's/^MAIL_AUTH_MODE=.*/MAIL_AUTH_MODE=local/' -e 's/^MAIL_MAILBOX=.*/MAIL_MAILBOX=buchhaltung@openemployed.test/' \
       -e 's/^SMTP_HOST=.*/SMTP_HOST=mailpit/' -e 's/^SMTP_PORT=.*/SMTP_PORT=1025/' .env && rm -f .env.bak
   else
     printf "Adresse der App (z. B. https://app.firma.de): "; read -r ORIGIN
@@ -39,5 +39,5 @@ docker compose exec -T backend alembic upgrade head
 if [ "$MODE" = "--lokal" ]; then
   echo "Fertig: http://localhost  (Testpostfach: http://localhost:8025, Demodaten: make demo)"
 else
-  echo "Fertig. nginx-Vorlage: infra/nginx/selbstlite.conf – danach ${APP_ORIGIN:-https://…}/einrichtung öffnen."
+  echo "Fertig. nginx-Vorlage: infra/nginx/openemployed.conf – danach ${APP_ORIGIN:-https://…}/einrichtung öffnen."
 fi

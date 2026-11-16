@@ -43,8 +43,8 @@ STATEMENTS: list[str] = [
     """,
     "CREATE INDEX user_sessions_user_idx ON user_sessions (user_id) WHERE revoked_at IS NULL",
     # Benutzer werden nie gelöscht (Audit-Log verweist auf sie), nur gesperrt
-    "REVOKE DELETE, TRUNCATE ON users FROM selbstlite_app",
-    "REVOKE TRUNCATE ON user_sessions FROM selbstlite_app",
+    "REVOKE DELETE, TRUNCATE ON users FROM openemployed_app",
+    "REVOKE TRUNCATE ON user_sessions FROM openemployed_app",
 ]
 
 

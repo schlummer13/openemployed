@@ -175,9 +175,9 @@ STATEMENTS: list[str] = [
     CREATE TRIGGER invoice_lines_guard BEFORE INSERT OR UPDATE OR DELETE ON invoice_lines
         FOR EACH ROW EXECUTE FUNCTION guard_issued_invoice_lines()
     """,
-    "REVOKE TRUNCATE ON customers, products, invoices, invoice_lines FROM selbstlite_app",
+    "REVOKE TRUNCATE ON customers, products, invoices, invoice_lines FROM openemployed_app",
     # Kunden und Produkte werden archiviert, nicht gelöscht (Verweise aus Rechnungen)
-    "REVOKE DELETE ON customers, products FROM selbstlite_app",
+    "REVOKE DELETE ON customers, products FROM openemployed_app",
     "REVOKE ALL ON FUNCTION guard_issued_invoice(), guard_issued_invoice_lines() FROM PUBLIC",
 ]
 

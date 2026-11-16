@@ -6,7 +6,7 @@ set -eu
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
 : "${DOCUMENSO_SIGNING_PASSPHRASE:?DOCUMENSO_SIGNING_PASSPHRASE fehlt}"
-SUBJECT="${DOCUMENSO_CERT_SUBJECT:-/C=DE/L=Duesseldorf/O=selbstlite/CN=selbstlite Signatur}"
+SUBJECT="${DOCUMENSO_CERT_SUBJECT:-/C=DE/L=Duesseldorf/O=openemployed/CN=openemployed Signatur}"
 
 if [ -f "$DIR/cert.p12" ]; then
   echo "cert.p12 existiert bereits – nichts zu tun."

@@ -10,7 +10,7 @@ import logging
 import time
 from typing import Any
 
-log = logging.getLogger("selbstlite.timing")
+log = logging.getLogger("openemployed.timing")
 SLOW_MS = 500.0
 
 

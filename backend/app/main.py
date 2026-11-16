@@ -54,7 +54,7 @@ from app.db.session import get_engine
 from app.services.ledger_client import LedgerClient
 from app.services.mail import MailError, MicrosoftTokenProvider, ServiceAccountTokenProvider, TokenProvider, WorkspaceMailer
 
-log = logging.getLogger("selbstlite")
+log = logging.getLogger("openemployed")
 
 
 def build_mailer(settings: Settings) -> WorkspaceMailer | None:

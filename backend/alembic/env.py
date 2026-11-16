@@ -1,4 +1,4 @@
-"""Alembic-Umgebung: Migrationen laufen mit der Rolle selbstlite_migrator (Eigentümer von public)."""
+"""Alembic-Umgebung: Migrationen laufen mit der Rolle openemployed_migrator (Eigentümer von public)."""
 
 from __future__ import annotations
 

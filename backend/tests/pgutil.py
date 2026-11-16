@@ -11,7 +11,7 @@ from pathlib import Path
 import asyncpg
 
 ADMIN_URL = os.environ.get("BACKEND_TEST_ADMIN_URL")
-ROLES = {"selbstlite_migrator": "mig_pw", "selbstlite_app": "app_pw", "selbstlite_ledger": "led_pw"}
+ROLES = {"openemployed_migrator": "mig_pw", "openemployed_app": "app_pw", "openemployed_ledger": "led_pw"}
 
 
 def db_url(user: str, password: str, db: str) -> str:
@@ -33,20 +33,20 @@ async def create_database() -> str:
                 f"DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname='{role}') THEN "
                 f"CREATE ROLE {role} LOGIN PASSWORD '{pw}'; ELSE ALTER ROLE {role} LOGIN PASSWORD '{pw}'; END IF; END $$;"
             )
-        await admin.execute(f"CREATE DATABASE {db} OWNER selbstlite_migrator")
+        await admin.execute(f"CREATE DATABASE {db} OWNER openemployed_migrator")
     finally:
         await admin.close()
 
     conn = await asyncpg.connect(ADMIN_URL.rsplit("/", 1)[0] + f"/{db}")
     try:
         await conn.execute("""
-            ALTER SCHEMA public OWNER TO selbstlite_migrator;
+            ALTER SCHEMA public OWNER TO openemployed_migrator;
             REVOKE ALL ON SCHEMA public FROM PUBLIC;
-            GRANT USAGE ON SCHEMA public TO selbstlite_app;
-            ALTER DEFAULT PRIVILEGES FOR ROLE selbstlite_migrator IN SCHEMA public
-              GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO selbstlite_app;
-            ALTER DEFAULT PRIVILEGES FOR ROLE selbstlite_migrator IN SCHEMA public
-              GRANT USAGE, SELECT ON SEQUENCES TO selbstlite_app;
+            GRANT USAGE ON SCHEMA public TO openemployed_app;
+            ALTER DEFAULT PRIVILEGES FOR ROLE openemployed_migrator IN SCHEMA public
+              GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO openemployed_app;
+            ALTER DEFAULT PRIVILEGES FOR ROLE openemployed_migrator IN SCHEMA public
+              GRANT USAGE, SELECT ON SEQUENCES TO openemployed_app;
         """)
     finally:
         await conn.close()
@@ -55,7 +55,7 @@ async def create_database() -> str:
     result = subprocess.run(
         [sys.executable, "-m", "alembic", "upgrade", "head"],
         cwd=backend_dir,
-        env={**os.environ, "MIGRATOR_DATABASE_URL": db_url("selbstlite_migrator", ROLES["selbstlite_migrator"], db)},
+        env={**os.environ, "MIGRATOR_DATABASE_URL": db_url("openemployed_migrator", ROLES["openemployed_migrator"], db)},
         capture_output=True,
         text=True,
         check=False,
@@ -76,4 +76,4 @@ async def drop_database(db: str) -> None:
 
 
 def app_url(db: str) -> str:
-    return db_url("selbstlite_app", ROLES["selbstlite_app"], db)
+    return db_url("openemployed_app", ROLES["openemployed_app"], db)

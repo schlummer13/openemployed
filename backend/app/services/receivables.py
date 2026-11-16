@@ -19,7 +19,7 @@ from app.services.ledger_client import LedgerClient, to_ledger_payload
 from app.services.mail import Attachment, OutgoingMail, WorkspaceMailer
 from app.services.masterdata import NotFoundError
 
-log = logging.getLogger("selbstlite.receivables")
+log = logging.getLogger("openemployed.receivables")
 D = Decimal
 DUNNING_LOCK_KEY = 0x5E1B_0002
 

@@ -40,7 +40,7 @@ STATEMENTS: list[str] = [
         PRIMARY KEY (currency, rate_date)
     )
     """,
-    "GRANT SELECT, INSERT, UPDATE ON exchange_rates TO selbstlite_app",
+    "GRANT SELECT, INSERT, UPDATE ON exchange_rates TO openemployed_app",
     "INSERT INTO accounts (chart, number, name, type) VALUES "
     "('SKR03', '2668', 'Kursdifferenzen (Erträge)', 'revenue'), ('SKR04', '4840', 'Kursdifferenzen (Erträge)', 'revenue'), "
     "('SKR03', '2150', 'Kursdifferenzen (Aufwand)', 'expense'), ('SKR04', '6880', 'Kursdifferenzen (Aufwand)', 'expense'), "

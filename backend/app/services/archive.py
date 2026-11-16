@@ -22,7 +22,7 @@ from sqlalchemy.ext.asyncio import AsyncConnection
 from app.services import audit
 from app.services.masterdata import ConflictError, NotFoundError
 
-log = logging.getLogger("selbstlite.archive")
+log = logging.getLogger("openemployed.archive")
 GENESIS = "0" * 64
 MAX_BYTES = 25 * 1024 * 1024
 CATEGORIES: dict[str, tuple[str, int]] = {

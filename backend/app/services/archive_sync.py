@@ -36,7 +36,7 @@ from sqlalchemy.ext.asyncio import AsyncConnection
 from app.services import audit
 from app.services.masterdata import ConflictError, NotFoundError
 
-log = logging.getLogger("selbstlite.archive_sync")
+log = logging.getLogger("openemployed.archive_sync")
 EXPORT_ROOT = Path(os.environ.get("ARCHIVE_EXPORT_ROOT", "/exports"))
 TIMEOUT = httpx.Timeout(60.0, connect=10.0)
 

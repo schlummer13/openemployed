@@ -67,8 +67,8 @@ STATEMENTS: list[str] = [
         PRIMARY KEY (contract_id, period_start)
     )
     """,
-    "REVOKE DELETE, TRUNCATE ON contracts, contract_billings FROM selbstlite_app",
-    "REVOKE TRUNCATE ON contract_lines FROM selbstlite_app",
+    "REVOKE DELETE, TRUNCATE ON contracts, contract_billings FROM openemployed_app",
+    "REVOKE TRUNCATE ON contract_lines FROM openemployed_app",
 ]
 
 

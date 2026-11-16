@@ -27,7 +27,7 @@ from app.domain.workflows import OPS, WorkflowError, condition, cron_matches, pa
 from app.services import audit, events
 from app.services.masterdata import ConflictError, NotFoundError
 
-log = logging.getLogger("selbstlite.workflows")
+log = logging.getLogger("openemployed.workflows")
 STEP_TYPES = {"if": "Wenn / Sonst", "condition": "Bedingung", "email": "E-Mail senden", "task": "Aufgabe anlegen", "http": "HTTP-Anfrage",
               "python": "Python-Code"}
 MAX_STEPS = 40

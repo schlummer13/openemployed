@@ -1,4 +1,4 @@
-//! selbstlite Ledger – Festschreibung (GoBD), Nummernvergabe und Hash-Kette.
+//! openemployed Ledger – Festschreibung (GoBD), Nummernvergabe und Hash-Kette.
 #![forbid(unsafe_code)]
 
 pub mod api;

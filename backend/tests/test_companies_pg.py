@@ -18,7 +18,7 @@ pytestmark = pytest.mark.skipif(not ADMIN_URL, reason="BACKEND_TEST_ADMIN_URL ni
 
 def client(token: str) -> httpx.AsyncClient:
     return httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://testserver", headers={"Origin": ORIGIN},
-                             cookies={"selbstlite_session": token})
+                             cookies={"openemployed_session": token})
 
 
 async def test_company_switch_and_isolation(env: Env) -> None:  # noqa: F811
@@ -32,7 +32,7 @@ async def test_company_switch_and_isolation(env: Env) -> None:  # noqa: F811
     api = client(token)
 
     def use(company: str) -> None:
-        api.cookies = httpx.Cookies({"selbstlite_session": token, "selbstlite_company": company})
+        api.cookies = httpx.Cookies({"openemployed_session": token, "openemployed_company": company})
     from app.services.companies import ensure_home
 
     await ensure_home(env.engine, s.tenant_id)
@@ -44,7 +44,7 @@ async def test_company_switch_and_isolation(env: Env) -> None:  # noqa: F811
     assert {c["name"] for c in mine["companies"]} >= {"Tochter UG"} and mine["current"] == str(s.tenant_id)
     sel = await api.post("/api/companies/select", json={"company_id": new})
     assert sel.status_code == 200
-    use(sel.cookies["selbstlite_company"])
+    use(sel.cookies["openemployed_company"])
     assert (await api.get("/api/companies")).json()["current"] == new
     assert (await api.get("/api/customers")).json() == [], "andere Firma sieht keine Kunden der Stammfirma"
     assert (await api.post("/api/customers", json={**B2B, "company_name": "Kunde der Tochter"})).status_code == 201
@@ -57,7 +57,7 @@ async def test_company_switch_and_isolation(env: Env) -> None:  # noqa: F811
     assert bob is not None
     btoken = await store.create_session(bob, ip=None, user_agent=None)
     b = client(btoken)
-    b.cookies = httpx.Cookies({"selbstlite_session": btoken, "selbstlite_company": new})
+    b.cookies = httpx.Cookies({"openemployed_session": btoken, "openemployed_company": new})
     assert (await b.post("/api/companies/select", json={"company_id": new})).status_code == 403
     assert all(c["display_name"] != "Kunde der Tochter" for c in (await b.get("/api/customers")).json())
     # Zugriff als Steuerberater in der Tochter

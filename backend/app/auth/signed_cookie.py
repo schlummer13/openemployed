@@ -22,7 +22,7 @@ def _b64d(text: str) -> bytes:
 
 
 def _mac(secret: bytes, body: str) -> str:
-    return _b64e(hmac.new(secret, b"selbstlite-signed-cookie:" + body.encode("ascii"), hashlib.sha256).digest())
+    return _b64e(hmac.new(secret, b"openemployed-signed-cookie:" + body.encode("ascii"), hashlib.sha256).digest())
 
 
 def sign(data: dict[str, Any], secret: str, *, max_age_seconds: int, now: float | None = None) -> str:

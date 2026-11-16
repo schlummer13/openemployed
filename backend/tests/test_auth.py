@@ -119,7 +119,7 @@ def test_full_login_and_logout(client: TestClient, google: FakeGoogle, store: Me
     assert r.status_code == 303
     assert r.headers["location"] == "/rechnungen"
     cookie_header = r.headers.get_list("set-cookie")
-    session_cookie = next(c for c in cookie_header if c.startswith("selbstlite_session="))
+    session_cookie = next(c for c in cookie_header if c.startswith("openemployed_session="))
     assert "HttpOnly" in session_cookie and "SameSite=lax" in session_cookie
     assert google.exchanged and google.exchanged[0][0] == "c1"
 

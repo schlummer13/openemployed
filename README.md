@@ -153,8 +153,7 @@ ausführen (`make test`) und `make lint`. Sicherheitslücken bitte **nicht** öf
 
 OpenEmployed ersetzt keine Steuer- oder Rechtsberatung. Steuer-, Lohn- und Sozialversicherungswerte werden sorgfältig gepflegt
 und gegen amtliche Prüfdaten getestet, dennoch ohne Gewähr. Abschlüsse und Meldungen bitte mit eurer Steuerberatung abstimmen;
-vor dem Produktivstart einen Monat parallel mit dem bisherigen Lohnbüro abrechnen. Technische Kennungen (Datenbank,
-Docker-Volumes) heißen aus Kompatibilitätsgründen noch `selbstlite`.
+vor dem Produktivstart einen Monat parallel mit dem bisherigen Lohnbüro abrechnen.
 
 ## Lizenz
 

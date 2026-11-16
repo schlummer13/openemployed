@@ -168,7 +168,7 @@ def client(store: MemoryAuthStore, google: FakeGoogle, mailer: FakeMailer) -> It
 def auth_client(client: TestClient, store: MemoryAuthStore) -> TestClient:
     user = User(id=uuid4(), email="anna@beispiel.de", name="Anna", picture=None)
     token = asyncio.run(store.create_session(user, ip=None, user_agent=None))
-    client.cookies.set("selbstlite_session", token)
+    client.cookies.set("openemployed_session", token)
     return client
 
 

@@ -60,7 +60,7 @@ async def test_offer_signature_flow(env: Env) -> None:  # noqa: F811
     assert r.status_code == 201, r.text
     sig = r.json()
     created = fake.created[0]
-    assert created["external_id"] == f"selbstlite:{sig['id']}" and fake.distributed == [sig["documenso_id"]]
+    assert created["external_id"] == f"openemployed:{sig['id']}" and fake.distributed == [sig["documenso_id"]]
     signer, counter = created["recipients"]
     assert signer["email"] == "erika@hr1.de" and signer["role"] == "SIGNER" and signer["signingOrder"] == 1
     assert counter["email"] == "anna@beispiel.de" and counter["signingOrder"] == 2

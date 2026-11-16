@@ -37,9 +37,9 @@ async fn setup() -> Option<TestDb> {
         .await
         .expect("Admin-Verbindung");
     for (role, pw) in [
-        ("selbstlite_ledger", LEDGER_PW),
-        ("selbstlite_app", APP_PW),
-        ("selbstlite_migrator", MIGRATOR_PW),
+        ("openemployed_ledger", LEDGER_PW),
+        ("openemployed_app", APP_PW),
+        ("openemployed_migrator", MIGRATOR_PW),
     ] {
         admin
             .execute(
@@ -53,7 +53,7 @@ async fn setup() -> Option<TestDb> {
             .unwrap();
     }
     admin
-        .execute(format!("CREATE DATABASE {name} OWNER selbstlite_migrator").as_str())
+        .execute(format!("CREATE DATABASE {name} OWNER openemployed_migrator").as_str())
         .await
         .unwrap();
     admin.close().await.unwrap();
@@ -68,15 +68,15 @@ async fn setup() -> Option<TestDb> {
         .unwrap();
     admin_pool
         .execute(
-            "CREATE SCHEMA ledger AUTHORIZATION selbstlite_migrator; \
-             GRANT USAGE ON SCHEMA ledger TO selbstlite_ledger, selbstlite_app;",
+            "CREATE SCHEMA ledger AUTHORIZATION openemployed_migrator; \
+             GRANT USAGE ON SCHEMA ledger TO openemployed_ledger, openemployed_app;",
         )
         .await
         .unwrap();
 
     let migrator_opts = base
         .clone()
-        .username("selbstlite_migrator")
+        .username("openemployed_migrator")
         .password(MIGRATOR_PW)
         .options([("search_path", "ledger")]);
     let migrator = PgPoolOptions::new()
@@ -91,14 +91,14 @@ async fn setup() -> Option<TestDb> {
         .max_connections(20)
         .connect_with(
             base.clone()
-                .username("selbstlite_ledger")
+                .username("openemployed_ledger")
                 .password(LEDGER_PW),
         )
         .await
         .unwrap();
     let app = PgPoolOptions::new()
         .max_connections(2)
-        .connect_with(base.username("selbstlite_app").password(APP_PW))
+        .connect_with(base.username("openemployed_app").password(APP_PW))
         .await
         .unwrap();
     Some(TestDb {

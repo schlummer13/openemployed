@@ -64,8 +64,8 @@ STATEMENTS: list[str] = [
     CREATE TRIGGER invoice_deliveries_immutable BEFORE UPDATE OR DELETE ON invoice_deliveries
         FOR EACH ROW EXECUTE FUNCTION forbid_modification()
     """,
-    "REVOKE UPDATE, DELETE, TRUNCATE ON invoice_documents, invoice_deliveries FROM selbstlite_app",
-    "REVOKE DELETE, TRUNCATE ON company_logos FROM selbstlite_app",
+    "REVOKE UPDATE, DELETE, TRUNCATE ON invoice_documents, invoice_deliveries FROM openemployed_app",
+    "REVOKE DELETE, TRUNCATE ON company_logos FROM openemployed_app",
 ]
 
 

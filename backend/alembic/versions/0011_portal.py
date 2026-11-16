@@ -132,7 +132,7 @@ STATEMENTS: list[str] = [
     $$
     """,
     "CREATE TRIGGER contract_terminations_guard BEFORE UPDATE OR DELETE ON contract_terminations FOR EACH ROW EXECUTE FUNCTION guard_termination()",
-    "REVOKE TRUNCATE ON contract_terminations, portal_events FROM selbstlite_app",
+    "REVOKE TRUNCATE ON contract_terminations, portal_events FROM openemployed_app",
 ]
 
 

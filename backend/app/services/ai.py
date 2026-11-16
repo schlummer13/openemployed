@@ -18,7 +18,7 @@ from typing import Any, Protocol, cast
 
 import httpx
 
-log = logging.getLogger("selbstlite.ai")
+log = logging.getLogger("openemployed.ai")
 
 
 class AIError(RuntimeError):

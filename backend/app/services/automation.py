@@ -25,7 +25,7 @@ from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 from app.core.config import get_settings
 from app.services.invoices import BERLIN
 
-log = logging.getLogger("selbstlite.automation")
+log = logging.getLogger("openemployed.automation")
 D = Decimal
 
 
